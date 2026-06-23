@@ -10,7 +10,12 @@
     <system:String x:Key="CheckUpdate">Cập nhật</system:String>
     <system:String x:Key="CheckingUpdate">Kiểm tra...</system:String>
     <system:String x:Key="UpdateAvailableTitle">Có bản cập nhật</system:String>
-    <system:String x:Key="UpdateAvailableMessage">Phiên bản hiện tại: {0}&#x0a;Phiên bản mới nhất: {1} ({2})&#x0a;&#x0a;Bạn có muốn mở trang tải bản mới không?</system:String>
+    <system:String x:Key="UpdateAvailableMessage">Phiên bản hiện tại: {0}&#x0a;Phiên bản mới nhất: {1} ({2})&#x0a;&#x0a;Bạn có muốn cập nhật ngay không?</system:String>
+    <system:String x:Key="UpdateNow">Update luôn</system:String>
+    <system:String x:Key="SkipUpdate">Bỏ qua</system:String>
+    <system:String x:Key="DownloadingUpdate">Đang cập nhật...</system:String>
+    <system:String x:Key="UpdateReadyMessage">Bản cập nhật đã được tải về. Ứng dụng sẽ đóng, cài bản mới và tự mở lại.</system:String>
+    <system:String x:Key="NoUpdateAssetMessage">Không tìm thấy gói cập nhật ZIP trong GitHub Release này.</system:String>
     <system:String x:Key="NoUpdateTitle">Cập nhật</system:String>
     <system:String x:Key="NoUpdateMessage">Bạn đang dùng phiên bản mới nhất ({0}).</system:String>
     <system:String x:Key="NoReleaseMessage">Chưa tìm thấy release nào trên GitHub.</system:String>

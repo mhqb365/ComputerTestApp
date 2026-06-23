@@ -42,7 +42,7 @@ namespace ComputerTestApp
             try
             {
                 var result = await UpdateService.CheckLatestReleaseAsync();
-                HandleUpdateResult(result);
+                await HandleUpdateResultAsync(result);
             }
             catch (Exception ex)
             {
@@ -59,24 +59,23 @@ namespace ComputerTestApp
             }
         }
 
-        private void HandleUpdateResult(UpdateCheckResult result)
+        private async System.Threading.Tasks.Task HandleUpdateResultAsync(UpdateCheckResult result)
         {
             switch (result.Status)
             {
                 case UpdateCheckStatus.UpdateAvailable:
-                    var answer = MessageBox.Show(
-                        LocalizationService.Format(
-                            "UpdateAvailableMessage",
-                            UpdateService.DisplayVersion,
-                            result.LatestVersion,
-                            result.Release?.TagName ?? result.Release?.Name),
-                        LocalizationService.Get("UpdateAvailableTitle"),
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Information);
+                    var updateNow = ShowUpdateAvailableDialog(result);
 
-                    if (answer == MessageBoxResult.Yes)
+                    if (updateNow)
                     {
-                        OpenUrl(result.Release?.HtmlUrl ?? "https://github.com/mhqb365/ComputerTestApp/releases/latest");
+                        CheckUpdateButton.SetResourceReference(ContentControl.ContentProperty, "DownloadingUpdate");
+                        var update = await UpdateService.DownloadAndPrepareUpdateAsync(result.Release);
+                        MessageBox.Show(
+                            LocalizationService.Get("UpdateReadyMessage"),
+                            LocalizationService.Get("UpdateAvailableTitle"),
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
+                        UpdateService.InstallPreparedUpdate(update);
                     }
                     break;
                 case UpdateCheckStatus.UpToDate:
@@ -106,6 +105,76 @@ namespace ComputerTestApp
                     }
                     break;
             }
+        }
+
+        private bool ShowUpdateAvailableDialog(UpdateCheckResult result)
+        {
+            var dialog = new Window
+            {
+                Title = LocalizationService.Get("UpdateAvailableTitle"),
+                Owner = this,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                SizeToContent = SizeToContent.WidthAndHeight,
+                ResizeMode = ResizeMode.NoResize,
+                ShowInTaskbar = false
+            };
+
+            var panel = new StackPanel
+            {
+                Margin = new Thickness(20),
+                Width = 420
+            };
+
+            panel.Children.Add(new TextBlock
+            {
+                Text = LocalizationService.Format(
+                    "UpdateAvailableMessage",
+                    UpdateService.DisplayVersion,
+                    result.LatestVersion,
+                    result.Release?.TagName ?? result.Release?.Name),
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(0, 0, 0, 18)
+            });
+
+            var buttons = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                HorizontalAlignment = HorizontalAlignment.Right
+            };
+
+            var updateButton = new Button
+            {
+                Content = LocalizationService.Get("UpdateNow"),
+                Width = 120,
+                Height = 34,
+                Margin = new Thickness(0, 0, 10, 0),
+                IsDefault = true
+            };
+            var skipButton = new Button
+            {
+                Content = LocalizationService.Get("SkipUpdate"),
+                Width = 120,
+                Height = 34,
+                IsCancel = true
+            };
+
+            updateButton.Click += (sender, args) =>
+            {
+                dialog.DialogResult = true;
+                dialog.Close();
+            };
+            skipButton.Click += (sender, args) =>
+            {
+                dialog.DialogResult = false;
+                dialog.Close();
+            };
+
+            buttons.Children.Add(updateButton);
+            buttons.Children.Add(skipButton);
+            panel.Children.Add(buttons);
+            dialog.Content = panel;
+
+            return dialog.ShowDialog() == true;
         }
 
         private static void OpenUrl(string url)

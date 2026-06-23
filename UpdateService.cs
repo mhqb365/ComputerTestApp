@@ -1,10 +1,14 @@
 using System;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text.RegularExpressions;
+using System.Windows;
 using System.Threading.Tasks;
 
 namespace ComputerTestApp
@@ -55,6 +59,107 @@ namespace ComputerTestApp
                     }
                 }
             }
+        }
+
+        public static async Task<PreparedUpdate> DownloadAndPrepareUpdateAsync(GitHubRelease release)
+        {
+            var asset = FindUpdateAsset(release);
+            if (asset == null)
+            {
+                throw new InvalidOperationException(LocalizationService.Get("NoUpdateAssetMessage"));
+            }
+
+            var tempRoot = Path.Combine(Path.GetTempPath(), $"computer-test-update-{Guid.NewGuid():N}");
+            var zipPath = Path.Combine(tempRoot, asset.Name);
+            var extractPath = Path.Combine(tempRoot, "extracted");
+
+            Directory.CreateDirectory(tempRoot);
+            Directory.CreateDirectory(extractPath);
+
+            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.UserAgent.ParseAdd("ComputerTestApp");
+                using (var response = await client.GetAsync(asset.DownloadUrl))
+                {
+                    response.EnsureSuccessStatusCode();
+                    using (var input = await response.Content.ReadAsStreamAsync())
+                    using (var output = File.Create(zipPath))
+                    {
+                        await input.CopyToAsync(output);
+                    }
+                }
+            }
+
+            ZipFile.ExtractToDirectory(zipPath, extractPath);
+            return new PreparedUpdate(GetInstallSourceDirectory(extractPath), tempRoot);
+        }
+
+        public static void InstallPreparedUpdate(PreparedUpdate update)
+        {
+            if (update == null) throw new ArgumentNullException(nameof(update));
+
+            var appDirectory = AppDomain.CurrentDomain.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar);
+            var appExe = Assembly.GetExecutingAssembly().Location;
+            var scriptPath = Path.Combine(update.TempRoot, "install-update.ps1");
+            var script = $@"
+$ErrorActionPreference = 'Stop'
+$source = '{EscapePowerShellString(update.SourceDirectory)}'
+$target = '{EscapePowerShellString(appDirectory)}'
+$exe = '{EscapePowerShellString(appExe)}'
+$temp = '{EscapePowerShellString(update.TempRoot)}'
+$pidToWait = {Process.GetCurrentProcess().Id}
+Wait-Process -Id $pidToWait -ErrorAction SilentlyContinue
+Copy-Item -Path (Join-Path $source '*') -Destination $target -Recurse -Force
+Start-Process -FilePath $exe -WorkingDirectory $target
+Start-Sleep -Seconds 2
+Remove-Item -LiteralPath $temp -Recurse -Force -ErrorAction SilentlyContinue
+";
+            File.WriteAllText(scriptPath, script);
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "powershell.exe",
+                Arguments = $"-NoProfile -ExecutionPolicy Bypass -File \"{scriptPath}\"",
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                WorkingDirectory = appDirectory
+            });
+
+            Application.Current.Shutdown();
+        }
+
+        private static GitHubReleaseAsset FindUpdateAsset(GitHubRelease release)
+        {
+            if (release?.Assets == null) return null;
+
+            foreach (var asset in release.Assets)
+            {
+                if (string.IsNullOrWhiteSpace(asset?.DownloadUrl)) continue;
+                if (asset.Name?.EndsWith(".zip", StringComparison.OrdinalIgnoreCase) == true)
+                {
+                    return asset;
+                }
+            }
+
+            return null;
+        }
+
+        private static string GetInstallSourceDirectory(string extractPath)
+        {
+            var rootFiles = Directory.GetFiles(extractPath);
+            var rootDirectories = Directory.GetDirectories(extractPath);
+            if (rootFiles.Length == 0 && rootDirectories.Length == 1)
+            {
+                return rootDirectories[0];
+            }
+
+            return extractPath;
+        }
+
+        private static string EscapePowerShellString(string value)
+        {
+            return value.Replace("'", "''");
         }
 
         private static Version ParseVersion(string value)
@@ -125,5 +230,30 @@ namespace ComputerTestApp
 
         [DataMember(Name = "html_url")]
         public string HtmlUrl { get; set; }
+
+        [DataMember(Name = "assets")]
+        public GitHubReleaseAsset[] Assets { get; set; }
+    }
+
+    [DataContract]
+    internal sealed class GitHubReleaseAsset
+    {
+        [DataMember(Name = "name")]
+        public string Name { get; set; }
+
+        [DataMember(Name = "browser_download_url")]
+        public string DownloadUrl { get; set; }
+    }
+
+    internal sealed class PreparedUpdate
+    {
+        public PreparedUpdate(string sourceDirectory, string tempRoot)
+        {
+            SourceDirectory = sourceDirectory;
+            TempRoot = tempRoot;
+        }
+
+        public string SourceDirectory { get; }
+        public string TempRoot { get; }
     }
 }

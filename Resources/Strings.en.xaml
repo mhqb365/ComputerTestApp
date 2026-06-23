@@ -10,7 +10,12 @@
     <system:String x:Key="CheckUpdate">Update</system:String>
     <system:String x:Key="CheckingUpdate">Checking...</system:String>
     <system:String x:Key="UpdateAvailableTitle">Update available</system:String>
-    <system:String x:Key="UpdateAvailableMessage">Current version: {0}&#x0a;Latest version: {1} ({2})&#x0a;&#x0a;Do you want to open the download page?</system:String>
+    <system:String x:Key="UpdateAvailableMessage">Current version: {0}&#x0a;Latest version: {1} ({2})&#x0a;&#x0a;Do you want to update now?</system:String>
+    <system:String x:Key="UpdateNow">Update now</system:String>
+    <system:String x:Key="SkipUpdate">Skip</system:String>
+    <system:String x:Key="DownloadingUpdate">Updating...</system:String>
+    <system:String x:Key="UpdateReadyMessage">The update has been downloaded. The app will close, install the update, and reopen automatically.</system:String>
+    <system:String x:Key="NoUpdateAssetMessage">No ZIP update package was found in this GitHub release.</system:String>
     <system:String x:Key="NoUpdateTitle">Update</system:String>
     <system:String x:Key="NoUpdateMessage">You are using the latest version ({0}).</system:String>
     <system:String x:Key="NoReleaseMessage">No GitHub release was found.</system:String>
