@@ -1,0 +1,43 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / ReSharper
+.idea/
+_ReSharper*/
+*.DotSettings.user
+
+# VS Code
+.vscode/
+
+# NuGet
+packages/
+*.nupkg
+project.assets.json
+project.nuget.cache
+*.nuget.props
+*.nuget.targets
+
+# Test and coverage output
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+coverage*.json
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.cache
+
+# Windows
+Thumbs.db
+Desktop.ini

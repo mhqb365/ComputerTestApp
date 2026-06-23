@@ -1,0 +1,78 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="AppTitle">Computer Test App</system:String>
+    <system:String x:Key="BrandTitle">Computer Test</system:String>
+    <system:String x:Key="LanguageLabel">Language</system:String>
+    <system:String x:Key="ThemeLabel">Theme</system:String>
+    <system:String x:Key="EnableLightMode">Light mode</system:String>
+    <system:String x:Key="EnableDarkMode">Dark mode</system:String>
+    <system:String x:Key="NavKeyboard">Keyboard</system:String>
+    <system:String x:Key="NavScreen">Screen</system:String>
+    <system:String x:Key="NavSpeaker">Speaker</system:String>
+    <system:String x:Key="NavMicrophone">Microphone</system:String>
+    <system:String x:Key="NavWebcam">Webcam</system:String>
+    <system:String x:Key="NavUsb">USB Ports</system:String>
+
+    <system:String x:Key="KeyboardTitle">Keyboard test</system:String>
+    <system:String x:Key="KeyboardInstruction">Press each key to test it. Tested keys are highlighted and their press count is displayed.</system:String>
+    <system:String x:Key="KeysLabel"> keys</system:String>
+    <system:String x:Key="Reset">Reset</system:String>
+    <system:String x:Key="MouseLeft">Left mouse</system:String>
+    <system:String x:Key="MouseMiddle">Middle mouse</system:String>
+    <system:String x:Key="MouseRight">Right mouse</system:String>
+
+    <system:String x:Key="ScreenTitle">Screen test</system:String>
+    <system:String x:Key="ScreenDescription">Check for dead pixels by displaying solid colors in full screen.</system:String>
+    <system:String x:Key="ScreenInstruction">Instructions: Click to change color. Press ESC to exit.</system:String>
+    <system:String x:Key="StartTest">Start test</system:String>
+
+    <system:String x:Key="SpeakerTitle">Speaker test</system:String>
+    <system:String x:Key="SpeakerDescription">Test the left and right speaker channels with NAudio.</system:String>
+    <system:String x:Key="SystemVolume">System volume</system:String>
+    <system:String x:Key="Unavailable">Unavailable</system:String>
+    <system:String x:Key="PlayLeft">Play left speaker</system:String>
+    <system:String x:Key="PlayRight">Play right speaker</system:String>
+    <system:String x:Key="StopLeft">Stop left speaker</system:String>
+    <system:String x:Key="StopRight">Stop right speaker</system:String>
+    <system:String x:Key="SpeakerReady">Ready to test.</system:String>
+    <system:String x:Key="PlayingLeft">Playing the left speaker...</system:String>
+    <system:String x:Key="PlayingRight">Playing the right speaker...</system:String>
+    <system:String x:Key="ErrorFormat">Error: {0}</system:String>
+
+    <system:String x:Key="MicTitle">Microphone test</system:String>
+    <system:String x:Key="MicDescription">Test microphone input levels and record audio with NAudio.</system:String>
+    <system:String x:Key="SelectMicrophone">Select microphone</system:String>
+    <system:String x:Key="MicrophoneSensitivity">Microphone sensitivity</system:String>
+    <system:String x:Key="StartRecording">Start recording</system:String>
+    <system:String x:Key="StopRecording">Stop recording</system:String>
+    <system:String x:Key="Playback">Playback</system:String>
+    <system:String x:Key="StopPlayback">Stop playback</system:String>
+    <system:String x:Key="NoRecording">No recording available.</system:String>
+    <system:String x:Key="RecordingReady">Recording is ready.</system:String>
+    <system:String x:Key="RecordingNow">Recording...</system:String>
+    <system:String x:Key="PlaybackNow">Playing the recording...</system:String>
+    <system:String x:Key="VolumeLevel">Input signal level:</system:String>
+    <system:String x:Key="NoMicrophone">No microphone found.</system:String>
+    <system:String x:Key="MicrophoneListError">Could not load the microphone list.</system:String>
+    <system:String x:Key="MicrophoneErrorFormat">Microphone error: {0}</system:String>
+    <system:String x:Key="PlaybackErrorFormat">Audio playback error: {0}</system:String>
+
+    <system:String x:Key="WebcamTitle">Webcam test</system:String>
+    <system:String x:Key="WebcamDescription">Select a camera and start the live image test with AForge.</system:String>
+    <system:String x:Key="SelectCamera">Select camera</system:String>
+    <system:String x:Key="Start">Start</system:String>
+    <system:String x:Key="Stop">Stop</system:String>
+    <system:String x:Key="CameraListErrorFormat">Could not load the camera list: {0}</system:String>
+    <system:String x:Key="ErrorTitle">Error</system:String>
+
+    <system:String x:Key="UsbTitle">USB ports</system:String>
+    <system:String x:Key="UsbDescription">Connect a device to the port under test. Its information appears when Windows detects it and disappears when unplugged.</system:String>
+    <system:String x:Key="UsbDetected">USB device detected</system:String>
+    <system:String x:Key="Device">Device</system:String>
+    <system:String x:Key="Manufacturer">Manufacturer</system:String>
+    <system:String x:Key="Status">Status</system:String>
+    <system:String x:Key="DeviceId">Device ID</system:String>
+    <system:String x:Key="Unknown">Unknown</system:String>
+    <system:String x:Key="UsbMonitorErrorFormat">Could not start USB monitoring: {0}</system:String>
+</ResourceDictionary>

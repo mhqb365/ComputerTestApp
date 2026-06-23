@@ -1,0 +1,55 @@
+<Window x:Class="ComputerTestApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        mc:Ignorable="d"
+        Title="{DynamicResource AppTitle}" Height="720" Width="1080"
+        TextElement.Foreground="{DynamicResource PrimaryTextBrush}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="14"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource SecondaryRegionBrush}"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,0" Background="{DynamicResource RegionBrush}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{DynamicResource BrandTitle}" FontSize="24" FontWeight="Bold" Margin="16" Foreground="{DynamicResource PrimaryBrush}"/>
+                <ListBox x:Name="NavListBox" Grid.Row="1" SelectionChanged="NavListBox_SelectionChanged" Margin="0,10,0,0">
+                    <ListBoxItem Content="{DynamicResource NavKeyboard}" Tag="Keyboard" Padding="16"/>
+                    <ListBoxItem Content="{DynamicResource NavScreen}" Tag="Screen" Padding="16"/>
+                    <ListBoxItem Content="{DynamicResource NavSpeaker}" Tag="Speaker" Padding="16"/>
+                    <ListBoxItem Content="{DynamicResource NavMicrophone}" Tag="Mic" Padding="16"/>
+                    <ListBoxItem Content="{DynamicResource NavWebcam}" Tag="Webcam" Padding="16"/>
+                    <ListBoxItem Content="{DynamicResource NavUsb}" Tag="Usb" Padding="16"/>
+                </ListBox>
+                <StackPanel Grid.Row="2" Margin="16">
+                    <TextBlock Text="{DynamicResource ThemeLabel}" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8"/>
+                    <Button x:Name="ThemeToggleButton" Width="144" Height="34" HorizontalAlignment="Left"
+                            Margin="0,0,0,16" Click="ThemeToggleButton_Click"/>
+                    <TextBlock Text="{DynamicResource LanguageLabel}" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="VietnameseButton" Content="VI" Width="68" Height="34" Margin="0,0,8,0" Click="VietnameseButton_Click"/>
+                        <Button x:Name="EnglishButton" Content="EN" Width="68" Height="34" Click="EnglishButton_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <hc:TransitioningContentControl Grid.Column="1">
+            <ContentControl x:Name="MainContent" Margin="16"/>
+        </hc:TransitioningContentControl>
+    </Grid>
+</Window>
