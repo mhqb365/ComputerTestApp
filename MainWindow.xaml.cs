@@ -172,6 +172,9 @@ namespace ComputerTestApp
                 case "Battery":
                     MainContent.Content = new BatteryTestControl();
                     break;
+                case "Disk":
+                    MainContent.Content = new DiskTestControl();
+                    break;
                 case "Usb":
                     MainContent.Content = new UsbTestControl();
                     break;

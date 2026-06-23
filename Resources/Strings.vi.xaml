@@ -25,6 +25,7 @@
     <system:String x:Key="NavMicrophone">Micrô</system:String>
     <system:String x:Key="NavWebcam">Máy ảnh</system:String>
     <system:String x:Key="NavBattery">Pin</system:String>
+    <system:String x:Key="NavDisk">Ổ cứng</system:String>
     <system:String x:Key="NavUsb">Cổng USB</system:String>
 
     <system:String x:Key="KeyboardTitle">Kiểm tra bàn phím</system:String>
@@ -102,6 +103,30 @@
     <system:String x:Key="BatteryReportCreateFailed">Không thể tạo báo cáo pin của Windows.</system:String>
     <system:String x:Key="BatteryReportTimeout">Tạo báo cáo pin quá thời gian chờ.</system:String>
     <system:String x:Key="BatteryCheckErrorFormat">Kiểm tra pin thất bại: {0}</system:String>
+
+    <system:String x:Key="DiskTitle">Kiểm tra ổ cứng</system:String>
+    <system:String x:Key="DiskDescription">Kiểm tra các ổ cứng trong máy bằng smartmontools. Cài smartmontools hoặc đặt smartctl.exe cạnh ứng dụng.</system:String>
+    <system:String x:Key="CheckDisk">Kiểm tra ổ cứng</system:String>
+    <system:String x:Key="CheckingDisk">Đang kiểm tra...</system:String>
+    <system:String x:Key="DiskDevice">Thiết bị</system:String>
+    <system:String x:Key="DiskProtocol">Giao thức</system:String>
+    <system:String x:Key="DiskSerial">Serial</system:String>
+    <system:String x:Key="DiskCapacity">Dung lượng</system:String>
+    <system:String x:Key="DiskSmartStatus">Trạng thái SMART</system:String>
+    <system:String x:Key="DiskTemperature">Nhiệt độ</system:String>
+    <system:String x:Key="DiskPowerOnHours">Số giờ hoạt động</system:String>
+    <system:String x:Key="DiskPowerCycles">Số lần bật/tắt</system:String>
+    <system:String x:Key="DiskWearUsed">Mức hao mòn</system:String>
+    <system:String x:Key="DiskSmartPassed">Tốt</system:String>
+    <system:String x:Key="DiskSmartFailed">Lỗi / cảnh báo</system:String>
+    <system:String x:Key="DiskSmartUnavailable">Không đọc được. Hãy thử chạy ứng dụng bằng quyền quản trị hoặc kiểm tra ổ/adapter có hỗ trợ SMART không.</system:String>
+    <system:String x:Key="DiskTemperatureFormat">{0} °C</system:String>
+    <system:String x:Key="DiskWearUsedFormat">{0}%</system:String>
+    <system:String x:Key="SmartctlNotFound">Không tìm thấy smartctl.exe. Hãy cài smartmontools, thêm vào PATH, hoặc đặt smartctl.exe cạnh ứng dụng.</system:String>
+    <system:String x:Key="NoDiskFound">smartctl không tìm thấy ổ cứng nào.</system:String>
+    <system:String x:Key="SmartctlRunFailed">Không thể chạy smartctl.</system:String>
+    <system:String x:Key="SmartctlTimeout">smartctl chạy quá thời gian chờ.</system:String>
+    <system:String x:Key="DiskCheckErrorFormat">Kiểm tra ổ cứng thất bại: {0}</system:String>
 
     <system:String x:Key="UsbTitle">Kiểm tra cổng USB</system:String>
     <system:String x:Key="UsbDescription">Cắm thiết bị vào cổng cần kiểm tra. Thông tin sẽ xuất hiện khi Windows nhận diện và biến mất khi rút thiết bị.</system:String>

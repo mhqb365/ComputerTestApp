@@ -25,6 +25,7 @@
     <system:String x:Key="NavMicrophone">Microphone</system:String>
     <system:String x:Key="NavWebcam">Webcam</system:String>
     <system:String x:Key="NavBattery">Battery</system:String>
+    <system:String x:Key="NavDisk">Disk</system:String>
     <system:String x:Key="NavUsb">USB Ports</system:String>
 
     <system:String x:Key="KeyboardTitle">Keyboard test</system:String>
@@ -102,6 +103,30 @@
     <system:String x:Key="BatteryReportCreateFailed">Could not create the Windows battery report.</system:String>
     <system:String x:Key="BatteryReportTimeout">Battery report creation timed out.</system:String>
     <system:String x:Key="BatteryCheckErrorFormat">Battery check failed: {0}</system:String>
+
+    <system:String x:Key="DiskTitle">Disk health test</system:String>
+    <system:String x:Key="DiskDescription">Check internal disks with smartmontools. Install smartmontools or place smartctl.exe next to the app.</system:String>
+    <system:String x:Key="CheckDisk">Check disks</system:String>
+    <system:String x:Key="CheckingDisk">Checking...</system:String>
+    <system:String x:Key="DiskDevice">Device</system:String>
+    <system:String x:Key="DiskProtocol">Protocol</system:String>
+    <system:String x:Key="DiskSerial">Serial</system:String>
+    <system:String x:Key="DiskCapacity">Capacity</system:String>
+    <system:String x:Key="DiskSmartStatus">SMART status</system:String>
+    <system:String x:Key="DiskTemperature">Temperature</system:String>
+    <system:String x:Key="DiskPowerOnHours">Power-on hours</system:String>
+    <system:String x:Key="DiskPowerCycles">Power cycles</system:String>
+    <system:String x:Key="DiskWearUsed">Wear used</system:String>
+    <system:String x:Key="DiskSmartPassed">Passed</system:String>
+    <system:String x:Key="DiskSmartFailed">Failed / warning</system:String>
+    <system:String x:Key="DiskSmartUnavailable">Unavailable. Try running the app as administrator or check whether the disk/adapter supports SMART.</system:String>
+    <system:String x:Key="DiskTemperatureFormat">{0} °C</system:String>
+    <system:String x:Key="DiskWearUsedFormat">{0}%</system:String>
+    <system:String x:Key="SmartctlNotFound">smartctl.exe was not found. Install smartmontools, add it to PATH, or place smartctl.exe next to the app.</system:String>
+    <system:String x:Key="NoDiskFound">No disk was found by smartctl.</system:String>
+    <system:String x:Key="SmartctlRunFailed">Could not run smartctl.</system:String>
+    <system:String x:Key="SmartctlTimeout">smartctl timed out.</system:String>
+    <system:String x:Key="DiskCheckErrorFormat">Disk check failed: {0}</system:String>
 
     <system:String x:Key="UsbTitle">USB ports</system:String>
     <system:String x:Key="UsbDescription">Connect a device to the port under test. Its information appears when Windows detects it and disappears when unplugged.</system:String>
