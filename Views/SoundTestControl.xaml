@@ -10,12 +10,17 @@
 
             <Border Background="{DynamicResource RegionBrush}" BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1" CornerRadius="6" Padding="16" Margin="0,0,0,0"
-                    MaxWidth="620" HorizontalAlignment="Left">
+                    MaxWidth="700" HorizontalAlignment="Left">
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="320"/>
                         <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="{DynamicResource SystemVolume}" FontSize="15" VerticalAlignment="Center" Margin="0,0,20,0"/>
                     <Slider x:Name="SystemVolumeSlider" Grid.Column="1" Minimum="0" Maximum="100"
@@ -24,6 +29,14 @@
                     <TextBlock x:Name="VolumePercentText" Grid.Column="2" Text="0%" FontSize="15"
                                Foreground="{DynamicResource PrimaryBrush}" FontWeight="SemiBold"
                                HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="1" Text="{DynamicResource SpeakerOutputStatus}" FontSize="15"
+                               VerticalAlignment="Center" Margin="0,16,20,0"/>
+                    <TextBlock x:Name="SpeakerMuteStatusText" Grid.Row="1" Grid.Column="1" FontSize="15"
+                               Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center"
+                               Margin="0,16,0,0"/>
+                    <Button x:Name="SpeakerMuteButton" Grid.Row="1" Grid.Column="3" Width="120" Height="34"
+                            Margin="20,16,0,0" Click="SpeakerMuteButton_Click"
+                            Style="{StaticResource ButtonDefault}"/>
                 </Grid>
             </Border>
 

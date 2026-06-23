@@ -44,6 +44,11 @@
     <system:String x:Key="SpeakerTitle">Speaker test</system:String>
     <system:String x:Key="SpeakerDescription">Test the left and right speaker channels.</system:String>
     <system:String x:Key="SystemVolume">System volume</system:String>
+    <system:String x:Key="SpeakerOutputStatus">Speaker status</system:String>
+    <system:String x:Key="SpeakerOn">On</system:String>
+    <system:String x:Key="SpeakerMuted">Muted</system:String>
+    <system:String x:Key="MuteSpeaker">Mute speaker</system:String>
+    <system:String x:Key="UnmuteSpeaker">Unmute speaker</system:String>
     <system:String x:Key="Unavailable">Unavailable</system:String>
     <system:String x:Key="PlayLeft">Play left speaker</system:String>
     <system:String x:Key="PlayRight">Play right speaker</system:String>

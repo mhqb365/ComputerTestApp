@@ -37,7 +37,9 @@ namespace ComputerTestApp.Views
                 }
 
                 audioDevice.AudioEndpointVolume.OnVolumeNotification += AudioEndpointVolume_OnVolumeNotification;
-                UpdateVolumeDisplay(audioDevice.AudioEndpointVolume.MasterVolumeLevelScalar * 100);
+                UpdateAudioEndpointDisplay(
+                    audioDevice.AudioEndpointVolume.MasterVolumeLevelScalar * 100,
+                    audioDevice.AudioEndpointVolume.Mute);
             }
             catch (Exception ex)
             {
@@ -49,7 +51,10 @@ namespace ComputerTestApp.Views
                 audioDevice?.Dispose();
                 audioDevice = null;
                 SystemVolumeSlider.IsEnabled = false;
+                SpeakerMuteButton.IsEnabled = false;
                 VolumePercentText.SetResourceReference(TextBlock.TextProperty, "Unavailable");
+                SpeakerMuteStatusText.SetResourceReference(TextBlock.TextProperty, "Unavailable");
+                SpeakerMuteButton.SetResourceReference(ContentControl.ContentProperty, "Unavailable");
             }
         }
 
@@ -72,15 +77,37 @@ namespace ComputerTestApp.Views
         {
             if (Dispatcher.HasShutdownStarted) return;
 
-            _ = Dispatcher.BeginInvoke(new Action(() => UpdateVolumeDisplay(data.MasterVolume * 100)));
+            _ = Dispatcher.BeginInvoke(new Action(() => UpdateAudioEndpointDisplay(data.MasterVolume * 100, data.Muted)));
         }
 
-        private void UpdateVolumeDisplay(double volume)
+        private void UpdateAudioEndpointDisplay(double volume, bool isMuted)
         {
             isUpdatingVolume = true;
             SystemVolumeSlider.Value = volume;
             VolumePercentText.Text = $"{Math.Round(volume)}%";
             isUpdatingVolume = false;
+            UpdateSpeakerMuteDisplay(isMuted);
+        }
+
+        private void UpdateSpeakerMuteDisplay(bool isMuted)
+        {
+            SpeakerMuteStatusText.SetResourceReference(TextBlock.TextProperty, isMuted ? "SpeakerMuted" : "SpeakerOn");
+            SpeakerMuteButton.SetResourceReference(ContentControl.ContentProperty, isMuted ? "UnmuteSpeaker" : "MuteSpeaker");
+        }
+
+        private void SpeakerMuteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (audioDevice == null) return;
+
+            try
+            {
+                audioDevice.AudioEndpointVolume.Mute = !audioDevice.AudioEndpointVolume.Mute;
+                UpdateSpeakerMuteDisplay(audioDevice.AudioEndpointVolume.Mute);
+            }
+            catch (Exception ex)
+            {
+                StatusText.Text = LocalizationService.Format("ErrorFormat", ex.Message);
+            }
         }
 
         private void PlayLeft_Click(object sender, RoutedEventArgs e)

@@ -44,6 +44,11 @@
     <system:String x:Key="SpeakerTitle">Kiểm tra loa</system:String>
     <system:String x:Key="SpeakerDescription">Kiểm tra âm thanh phát ra riêng từ loa trái và loa phải.</system:String>
     <system:String x:Key="SystemVolume">Âm lượng hệ thống</system:String>
+    <system:String x:Key="SpeakerOutputStatus">Trạng thái loa</system:String>
+    <system:String x:Key="SpeakerOn">Đang bật</system:String>
+    <system:String x:Key="SpeakerMuted">Đang tắt tiếng</system:String>
+    <system:String x:Key="MuteSpeaker">Tắt loa</system:String>
+    <system:String x:Key="UnmuteSpeaker">Bật loa</system:String>
     <system:String x:Key="Unavailable">Không khả dụng</system:String>
     <system:String x:Key="PlayLeft">Phát loa trái</system:String>
     <system:String x:Key="PlayRight">Phát loa phải</system:String>
