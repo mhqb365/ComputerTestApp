@@ -72,7 +72,15 @@
     <system:String x:Key="Device">Device</system:String>
     <system:String x:Key="Manufacturer">Manufacturer</system:String>
     <system:String x:Key="Status">Status</system:String>
+    <system:String x:Key="UsbStandard">USB standard</system:String>
+    <system:String x:Key="UsbController">Hub/Controller</system:String>
+    <system:String x:Key="UsbConnector">Connector type</system:String>
     <system:String x:Key="DeviceId">Device ID</system:String>
     <system:String x:Key="Unknown">Unknown</system:String>
+    <system:String x:Key="Usb1Inferred">USB 1.x (inferred)</system:String>
+    <system:String x:Key="Usb2Inferred">USB 2.0 / High-Speed (inferred)</system:String>
+    <system:String x:Key="Usb3Inferred">USB 3.x / SuperSpeed (inferred)</system:String>
+    <system:String x:Key="Usb4Inferred">USB4 (inferred)</system:String>
+    <system:String x:Key="UsbTypeCInferred">Likely USB-C (inferred)</system:String>
     <system:String x:Key="UsbMonitorErrorFormat">Could not start USB monitoring: {0}</system:String>
 </ResourceDictionary>

@@ -72,7 +72,15 @@
     <system:String x:Key="Device">Thiết bị</system:String>
     <system:String x:Key="Manufacturer">Nhà sản xuất</system:String>
     <system:String x:Key="Status">Trạng thái</system:String>
+    <system:String x:Key="UsbStandard">Chuẩn USB</system:String>
+    <system:String x:Key="UsbController">Hub/Controller</system:String>
+    <system:String x:Key="UsbConnector">Loại đầu cắm</system:String>
     <system:String x:Key="DeviceId">Mã thiết bị</system:String>
     <system:String x:Key="Unknown">Không rõ</system:String>
+    <system:String x:Key="Usb1Inferred">USB 1.x (suy luận)</system:String>
+    <system:String x:Key="Usb2Inferred">USB 2.0 / High-Speed (suy luận)</system:String>
+    <system:String x:Key="Usb3Inferred">USB 3.x / SuperSpeed (suy luận)</system:String>
+    <system:String x:Key="Usb4Inferred">USB4 (suy luận)</system:String>
+    <system:String x:Key="UsbTypeCInferred">Có thể là USB-C (suy luận)</system:String>
     <system:String x:Key="UsbMonitorErrorFormat">Không thể khởi tạo theo dõi USB: {0}</system:String>
 </ResourceDictionary>

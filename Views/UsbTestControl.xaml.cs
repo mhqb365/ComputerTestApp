@@ -15,6 +15,9 @@ namespace ComputerTestApp.Views
         private static readonly Regex VidPidPattern = new Regex(
             @"VID_[0-9A-F]{4}&PID_[0-9A-F]{4}",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex DeviceIdReferencePattern = new Regex(
+            @"DeviceID=""(?<id>(?:[^""]|"""")*)""",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private Dictionary<string, UsbDeviceInfo> connectedDevices = new Dictionary<string, UsbDeviceInfo>();
         private ManagementEventWatcher deviceWatcher;
@@ -142,7 +145,10 @@ namespace ComputerTestApp.Views
                 Name = name ?? representative.Name,
                 Manufacturer = manufacturer ?? representative.Manufacturer,
                 Status = representative.Status,
-                DeviceId = representative.DeviceId
+                DeviceId = representative.DeviceId,
+                Controller = nodes.Select(device => device.Controller).FirstOrDefault(value => !string.IsNullOrWhiteSpace(value)),
+                UsbStandard = InferUsbStandard(nodes),
+                Connector = InferUsbConnector(nodes)
             };
         }
 
@@ -170,6 +176,9 @@ namespace ComputerTestApp.Views
             DeviceNameText.Text = device.Name;
             SetTextOrUnknown(ManufacturerText, device.Manufacturer);
             SetTextOrUnknown(StatusText, device.Status);
+            SetTextOrUnknown(UsbStandardText, device.UsbStandard);
+            SetTextOrUnknown(UsbControllerText, device.Controller);
+            SetTextOrUnknown(UsbConnectorText, device.Connector);
             DeviceIdText.Text = device.DeviceId;
             DeviceCard.Visibility = Visibility.Visible;
         }
@@ -191,6 +200,9 @@ namespace ComputerTestApp.Views
             DeviceNameText.Text = string.Empty;
             ManufacturerText.Text = string.Empty;
             StatusText.Text = string.Empty;
+            UsbStandardText.Text = string.Empty;
+            UsbControllerText.Text = string.Empty;
+            UsbConnectorText.Text = string.Empty;
             DeviceIdText.Text = string.Empty;
             DeviceCard.Visibility = Visibility.Collapsed;
         }
@@ -199,6 +211,7 @@ namespace ComputerTestApp.Views
         {
             const string query = "SELECT Name, Manufacturer, PNPDeviceID, Status FROM Win32_PnPEntity WHERE PNPDeviceID LIKE 'USB%'";
             var devices = new Dictionary<string, UsbDeviceInfo>(StringComparer.OrdinalIgnoreCase);
+            var topology = LoadUsbTopology();
 
             using (var searcher = new ManagementObjectSearcher(query))
             using (var results = searcher.Get())
@@ -213,7 +226,8 @@ namespace ComputerTestApp.Views
                         Name = Convert.ToString(result["Name"]) ?? "USB Device",
                         Manufacturer = Convert.ToString(result["Manufacturer"]),
                         Status = Convert.ToString(result["Status"]),
-                        DeviceId = deviceId
+                        DeviceId = deviceId,
+                        Controller = topology.FindControllerName(deviceId)
                     };
                 }
             }
@@ -246,6 +260,135 @@ namespace ComputerTestApp.Views
             public string Manufacturer { get; set; }
             public string Status { get; set; }
             public string DeviceId { get; set; }
+            public string Controller { get; set; }
+            public string UsbStandard { get; set; }
+            public string Connector { get; set; }
+        }
+
+        private static string InferUsbStandard(IEnumerable<UsbDeviceInfo> devices)
+        {
+            var context = GetInferenceContext(devices);
+            if (ContainsAny(context, "USB4"))
+            {
+                return LocalizationService.Get("Usb4Inferred");
+            }
+
+            if (ContainsAny(context, "USB 3", "USB3", "3.0", "3.1", "3.2", "SUPERSPEED", "XHCI", "ROOT_HUB30"))
+            {
+                return LocalizationService.Get("Usb3Inferred");
+            }
+
+            if (ContainsAny(context, "USB 2", "USB2", "2.0", "HIGH-SPEED", "HIGH SPEED", "EHCI", "ENHANCED HOST CONTROLLER", "ROOT_HUB20"))
+            {
+                return LocalizationService.Get("Usb2Inferred");
+            }
+
+            if (ContainsAny(context, "UHCI", "OHCI", "OPENHCD"))
+            {
+                return LocalizationService.Get("Usb1Inferred");
+            }
+
+            return null;
+        }
+
+        private static string InferUsbConnector(IEnumerable<UsbDeviceInfo> devices)
+        {
+            var context = GetInferenceContext(devices);
+            if (ContainsAny(context, "TYPE-C", "TYPE C", "USB-C", "USBC", "UCSI", "USB CONNECTOR MANAGER", "USB4"))
+            {
+                return LocalizationService.Get("UsbTypeCInferred");
+            }
+
+            return null;
+        }
+
+        private static string GetInferenceContext(IEnumerable<UsbDeviceInfo> devices)
+        {
+            return string.Join(" | ", devices.SelectMany(device => new[]
+            {
+                device.Name,
+                device.Manufacturer,
+                device.Status,
+                device.DeviceId,
+                device.Controller
+            }).Where(value => !string.IsNullOrWhiteSpace(value))).ToUpperInvariant();
+        }
+
+        private static bool ContainsAny(string value, params string[] needles)
+        {
+            return needles.Any(needle => value.IndexOf(needle, StringComparison.OrdinalIgnoreCase) >= 0);
+        }
+
+        private static UsbTopologyInfo LoadUsbTopology()
+        {
+            var topology = new UsbTopologyInfo();
+
+            try
+            {
+                using (var searcher = new ManagementObjectSearcher("SELECT Name, PNPDeviceID FROM Win32_USBController"))
+                using (var results = searcher.Get())
+                {
+                    foreach (ManagementObject result in results)
+                    {
+                        var deviceId = Convert.ToString(result["PNPDeviceID"]);
+                        if (string.IsNullOrWhiteSpace(deviceId)) continue;
+
+                        topology.ControllerNames[deviceId] = Convert.ToString(result["Name"]);
+                    }
+                }
+
+                using (var searcher = new ManagementObjectSearcher("SELECT Antecedent, Dependent FROM Win32_USBControllerDevice"))
+                using (var results = searcher.Get())
+                {
+                    foreach (ManagementObject result in results)
+                    {
+                        var controllerId = ExtractDeviceId(Convert.ToString(result["Antecedent"]));
+                        var dependentId = ExtractDeviceId(Convert.ToString(result["Dependent"]));
+                        if (string.IsNullOrWhiteSpace(controllerId) || string.IsNullOrWhiteSpace(dependentId)) continue;
+
+                        topology.DeviceControllerIds[dependentId] = controllerId;
+                    }
+                }
+            }
+            catch (ManagementException ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Could not load USB topology: " + ex.Message);
+            }
+
+            return topology;
+        }
+
+        private static string ExtractDeviceId(string objectReference)
+        {
+            if (string.IsNullOrWhiteSpace(objectReference)) return null;
+
+            var match = DeviceIdReferencePattern.Match(objectReference);
+            if (!match.Success) return null;
+
+            return match.Groups["id"].Value
+                .Replace("\"\"", "\"")
+                .Replace(@"\\", @"\");
+        }
+
+        private class UsbTopologyInfo
+        {
+            public Dictionary<string, string> ControllerNames { get; } =
+                new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            public Dictionary<string, string> DeviceControllerIds { get; } =
+                new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            public string FindControllerName(string deviceId)
+            {
+                if (string.IsNullOrWhiteSpace(deviceId)) return null;
+
+                if (DeviceControllerIds.TryGetValue(deviceId, out var controllerId) &&
+                    ControllerNames.TryGetValue(controllerId, out var controllerName))
+                {
+                    return controllerName;
+                }
+
+                return null;
+            }
         }
     }
 }
