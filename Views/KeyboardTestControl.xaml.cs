@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 
 namespace ComputerTestApp.Views
@@ -11,19 +13,32 @@ namespace ComputerTestApp.Views
     {
         private Dictionary<string, KeyUIInfo> keyInfos = new Dictionary<string, KeyUIInfo>();
         private int totalKeysPressed = 0;
+        private HwndSource hwndSource;
+        private bool rawInputRegistered;
 
         public KeyboardTestControl()
         {
             InitializeComponent();
             this.KeyDown += KeyboardTestControl_KeyDown;
             this.KeyUp += KeyboardTestControl_KeyUp;
+            this.Unloaded += UserControl_Unloaded;
             GenerateKeyboardUI();
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             this.Focus();
+            RegisterRawKeyboardInput();
             RegisterMouseButtons();
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (hwndSource != null)
+            {
+                hwndSource.RemoveHook(WndProc);
+                hwndSource = null;
+            }
         }
 
         private void RegisterMouseButtons()
@@ -180,6 +195,103 @@ namespace ComputerTestApp.Views
                 }
                 UpdateKeyAppearance(info);
             }
+        }
+
+        private void RegisterRawKeyboardInput()
+        {
+            if (rawInputRegistered) return;
+
+            hwndSource = PresentationSource.FromVisual(this) as HwndSource;
+            if (hwndSource == null) return;
+
+            var device = new RAWINPUTDEVICE
+            {
+                usUsagePage = 0x01,
+                usUsage = 0x06,
+                dwFlags = 0,
+                hwndTarget = hwndSource.Handle
+            };
+
+            rawInputRegistered = RegisterRawInputDevices(
+                new[] { device },
+                1,
+                (uint)Marshal.SizeOf(typeof(RAWINPUTDEVICE)));
+
+            if (rawInputRegistered)
+            {
+                hwndSource.AddHook(WndProc);
+            }
+        }
+
+        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (msg != WmInput)
+            {
+                return IntPtr.Zero;
+            }
+
+            ProcessRawKeyboardInput(lParam);
+            return IntPtr.Zero;
+        }
+
+        private void ProcessRawKeyboardInput(IntPtr rawInputHandle)
+        {
+            var headerSize = (uint)Marshal.SizeOf(typeof(RAWINPUTHEADER));
+            uint dataSize = 0;
+            GetRawInputData(rawInputHandle, RidInput, IntPtr.Zero, ref dataSize, headerSize);
+            if (dataSize == 0) return;
+
+            var buffer = Marshal.AllocHGlobal((int)dataSize);
+            try
+            {
+                if (GetRawInputData(rawInputHandle, RidInput, buffer, ref dataSize, headerSize) != dataSize)
+                {
+                    return;
+                }
+
+                var rawInput = (RAWINPUT)Marshal.PtrToStructure(buffer, typeof(RAWINPUT));
+                if (rawInput.header.dwType != RimTypeKeyboard) return;
+
+                var key = GetPhysicalKey(rawInput.keyboard);
+                if (key == Key.None) return;
+
+                var keyId = $"Key_{(int)key}";
+                if (rawInput.keyboard.Message == WmKeyDown || rawInput.keyboard.Message == WmSysKeyDown)
+                {
+                    HandleKeyPress(keyId, key.ToString());
+                    return;
+                }
+
+                if (rawInput.keyboard.Message == WmKeyUp || rawInput.keyboard.Message == WmSysKeyUp)
+                {
+                    HandleKeyRelease(keyId);
+                }
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(buffer);
+            }
+        }
+
+        private static Key GetPhysicalKey(RAWKEYBOARD keyboard)
+        {
+            var virtualKey = keyboard.VKey;
+            var isExtended = (keyboard.Flags & RiKeyE0) == RiKeyE0;
+
+            if (virtualKey == VkShift)
+            {
+                virtualKey = (ushort)MapVirtualKey(keyboard.MakeCode, MapvkVscToVkEx);
+            }
+            else if (virtualKey == VkControl)
+            {
+                virtualKey = isExtended ? VkRControl : VkLControl;
+            }
+            else if (virtualKey == VkMenu)
+            {
+                virtualKey = isExtended ? VkRMenu : VkLMenu;
+            }
+
+            return KeyInterop.KeyFromVirtualKey(virtualKey);
         }
 
         private void HandleKeyRelease(string keyId)
@@ -417,6 +529,78 @@ namespace ComputerTestApp.Views
 
             UpdateKeyAppearance(info);
             return border;
+        }
+
+        private const int WmInput = 0x00FF;
+        private const int WmKeyDown = 0x0100;
+        private const int WmKeyUp = 0x0101;
+        private const int WmSysKeyDown = 0x0104;
+        private const int WmSysKeyUp = 0x0105;
+        private const uint RidInput = 0x10000003;
+        private const int RimTypeKeyboard = 1;
+        private const ushort RiKeyE0 = 0x02;
+        private const ushort VkShift = 0x10;
+        private const ushort VkControl = 0x11;
+        private const ushort VkMenu = 0x12;
+        private const ushort VkLShift = 0xA0;
+        private const ushort VkRShift = 0xA1;
+        private const ushort VkLControl = 0xA2;
+        private const ushort VkRControl = 0xA3;
+        private const ushort VkLMenu = 0xA4;
+        private const ushort VkRMenu = 0xA5;
+        private const uint MapvkVscToVkEx = 0x03;
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool RegisterRawInputDevices(
+            RAWINPUTDEVICE[] pRawInputDevices,
+            uint uiNumDevices,
+            uint cbSize);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern uint GetRawInputData(
+            IntPtr hRawInput,
+            uint uiCommand,
+            IntPtr pData,
+            ref uint pcbSize,
+            uint cbSizeHeader);
+
+        [DllImport("user32.dll")]
+        private static extern uint MapVirtualKey(ushort uCode, uint uMapType);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct RAWINPUTDEVICE
+        {
+            public ushort usUsagePage;
+            public ushort usUsage;
+            public uint dwFlags;
+            public IntPtr hwndTarget;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct RAWINPUTHEADER
+        {
+            public uint dwType;
+            public uint dwSize;
+            public IntPtr hDevice;
+            public IntPtr wParam;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct RAWKEYBOARD
+        {
+            public ushort MakeCode;
+            public ushort Flags;
+            public ushort Reserved;
+            public ushort VKey;
+            public uint Message;
+            public uint ExtraInformation;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct RAWINPUT
+        {
+            public RAWINPUTHEADER header;
+            public RAWKEYBOARD keyboard;
         }
     }
 }
