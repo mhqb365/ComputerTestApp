@@ -7,7 +7,7 @@
     <system:String x:Key="ThemeLabel">Theme</system:String>
     <system:String x:Key="AboutLabel">Product</system:String>
     <system:String x:Key="About">About</system:String>
-    <system:String x:Key="CheckUpdate">Check update</system:String>
+    <system:String x:Key="CheckUpdate">Update</system:String>
     <system:String x:Key="CheckingUpdate">Checking...</system:String>
     <system:String x:Key="UpdateAvailableTitle">Update available</system:String>
     <system:String x:Key="UpdateAvailableMessage">Current version: {0}&#x0a;Latest version: {1} ({2})&#x0a;&#x0a;Do you want to open the download page?</system:String>
@@ -29,7 +29,7 @@
     <system:String x:Key="NavUsb">USB Ports</system:String>
 
     <system:String x:Key="KeyboardTitle">Keyboard test</system:String>
-    <system:String x:Key="KeyboardInstruction">Press each key to test it. Tested keys are highlighted and their press count is displayed. Switch to the EN layout for stability.</system:String>
+    <system:String x:Key="KeyboardInstruction">Press key to test it. Tested keys are highlighted. Switch to the EN layout for stability.</system:String>
     <system:String x:Key="KeysLabel"> keys</system:String>
     <system:String x:Key="Reset">Reset</system:String>
     <system:String x:Key="MouseLeft">Left mouse</system:String>
@@ -37,7 +37,7 @@
     <system:String x:Key="MouseRight">Right mouse</system:String>
 
     <system:String x:Key="ScreenTitle">Screen test</system:String>
-    <system:String x:Key="ScreenDescription">Check for dead pixels by displaying solid colors in full screen. Click to change color. Press ESC to exit.</system:String>
+    <system:String x:Key="ScreenDescription">Click to change color. Press ESC to exit.</system:String>
     <system:String x:Key="ScreenInstruction">Instructions: Click to change color. Press ESC to exit.</system:String>
     <system:String x:Key="StartTest">Start test</system:String>
 
@@ -54,15 +54,24 @@
     <system:String x:Key="PlayRight">Play right speaker</system:String>
     <system:String x:Key="StopLeft">Stop left speaker</system:String>
     <system:String x:Key="StopRight">Stop right speaker</system:String>
+    <system:String x:Key="PlaySampleAudio">Play sample audio</system:String>
+    <system:String x:Key="StopSampleAudio">Stop sample audio</system:String>
     <system:String x:Key="SpeakerReady">Ready to test.</system:String>
     <system:String x:Key="PlayingLeft">Playing the left speaker...</system:String>
     <system:String x:Key="PlayingRight">Playing the right speaker...</system:String>
+    <system:String x:Key="PlayingSampleAudio">Playing sample audio...</system:String>
+    <system:String x:Key="SampleAudioNotFound">Sample audio file was not found.</system:String>
     <system:String x:Key="ErrorFormat">Error: {0}</system:String>
 
     <system:String x:Key="MicTitle">Microphone test</system:String>
     <system:String x:Key="MicDescription">Test microphone input levels and record audio.</system:String>
     <system:String x:Key="SelectMicrophone">Select microphone</system:String>
     <system:String x:Key="MicrophoneSensitivity">Microphone sensitivity</system:String>
+    <system:String x:Key="MicrophoneStatus">Microphone status</system:String>
+    <system:String x:Key="MicrophoneOn">On</system:String>
+    <system:String x:Key="MicrophoneMuted">Muted</system:String>
+    <system:String x:Key="MuteMicrophone">Mute mic</system:String>
+    <system:String x:Key="UnmuteMicrophone">Unmute mic</system:String>
     <system:String x:Key="StartRecording">Start recording</system:String>
     <system:String x:Key="StopRecording">Stop recording</system:String>
     <system:String x:Key="Playback">Playback</system:String>
@@ -80,13 +89,19 @@
     <system:String x:Key="WebcamTitle">Webcam test</system:String>
     <system:String x:Key="WebcamDescription">Select a camera and start the live image test.</system:String>
     <system:String x:Key="SelectCamera">Select camera</system:String>
+    <system:String x:Key="CameraStatus">Camera status</system:String>
+    <system:String x:Key="CameraOn">On</system:String>
+    <system:String x:Key="CameraOff">Off</system:String>
+    <system:String x:Key="TurnOnCamera">Turn on</system:String>
+    <system:String x:Key="TurnOffCamera">Turn off</system:String>
+    <system:String x:Key="NoCamera">No camera found.</system:String>
     <system:String x:Key="Start">Start</system:String>
     <system:String x:Key="Stop">Stop</system:String>
     <system:String x:Key="CameraListErrorFormat">Could not load the camera list: {0}</system:String>
     <system:String x:Key="ErrorTitle">Error</system:String>
 
     <system:String x:Key="BatteryTitle">Battery health test</system:String>
-    <system:String x:Key="BatteryDescription">Check battery wear level from Windows battery report and current battery status.</system:String>
+    <system:String x:Key="BatteryDescription">Check battery wear level from Windows battery report.</system:String>
     <system:String x:Key="CheckBattery">Check battery</system:String>
     <system:String x:Key="CheckingBattery">Checking...</system:String>
     <system:String x:Key="Battery">Battery</system:String>
@@ -110,7 +125,7 @@
     <system:String x:Key="BatteryCheckErrorFormat">Battery check failed: {0}</system:String>
 
     <system:String x:Key="DiskTitle">Disk health test</system:String>
-    <system:String x:Key="DiskDescription">Check internal disks with smartmontools. Install smartmontools or place smartctl.exe next to the app.</system:String>
+    <system:String x:Key="DiskDescription">Check internal disks with smartmontools.</system:String>
     <system:String x:Key="CheckDisk">Check disks</system:String>
     <system:String x:Key="CheckingDisk">Checking...</system:String>
     <system:String x:Key="DiskDevice">Device</system:String>
@@ -134,7 +149,7 @@
     <system:String x:Key="DiskCheckErrorFormat">Disk check failed: {0}</system:String>
 
     <system:String x:Key="UsbTitle">USB ports</system:String>
-    <system:String x:Key="UsbDescription">Connect a device to the port under test. Its information appears when Windows detects it and disappears when unplugged.</system:String>
+    <system:String x:Key="UsbDescription">Connect a device to the port under test. Information appears when Windows detects it.</system:String>
     <system:String x:Key="UsbDetected">USB device detected</system:String>
     <system:String x:Key="Device">Device</system:String>
     <system:String x:Key="Manufacturer">Manufacturer</system:String>

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using NAudio.CoreAudioApi;
@@ -10,6 +11,8 @@ namespace ComputerTestApp.Views
     public partial class SoundTestControl : UserControl
     {
         private WaveOutEvent waveOut;
+        private WaveOutEvent sampleWaveOut;
+        private AudioFileReader sampleAudioReader;
         private MMDevice audioDevice;
         private float? activePan;
         private bool isUpdatingVolume;
@@ -129,6 +132,7 @@ namespace ComputerTestApp.Views
             }
 
             StopTone();
+            StopSampleAudio();
 
             try
             {
@@ -167,6 +171,65 @@ namespace ComputerTestApp.Views
             UpdateButtonLabels();
         }
 
+        private void SampleAudioButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sampleWaveOut != null)
+            {
+                StopSampleAudio();
+                return;
+            }
+
+            StopTone();
+            PlaySampleAudio();
+        }
+
+        private void PlaySampleAudio()
+        {
+            try
+            {
+                var audioPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Sound", "openmindaudio-vlog-outro.mp3");
+                if (!File.Exists(audioPath))
+                {
+                    StatusText.Text = LocalizationService.Format("ErrorFormat", LocalizationService.Get("SampleAudioNotFound"));
+                    return;
+                }
+
+                sampleAudioReader = new AudioFileReader(audioPath);
+                sampleWaveOut = new WaveOutEvent();
+                sampleWaveOut.PlaybackStopped += SampleWaveOut_PlaybackStopped;
+                sampleWaveOut.Init(sampleAudioReader);
+                sampleWaveOut.Play();
+                SampleAudioButton.SetResourceReference(ContentControl.ContentProperty, "StopSampleAudio");
+                StatusText.SetResourceReference(TextBlock.TextProperty, "PlayingSampleAudio");
+            }
+            catch (Exception ex)
+            {
+                StopSampleAudio();
+                StatusText.Text = LocalizationService.Format("ErrorFormat", ex.Message);
+            }
+        }
+
+        private void SampleWaveOut_PlaybackStopped(object sender, StoppedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(new Action(StopSampleAudio));
+        }
+
+        private void StopSampleAudio()
+        {
+            if (sampleWaveOut != null)
+            {
+                sampleWaveOut.PlaybackStopped -= SampleWaveOut_PlaybackStopped;
+                sampleWaveOut.Stop();
+                sampleWaveOut.Dispose();
+                sampleWaveOut = null;
+            }
+
+            sampleAudioReader?.Dispose();
+            sampleAudioReader = null;
+            SampleAudioButton.SetResourceReference(ContentControl.ContentProperty, "PlaySampleAudio");
+            StatusText.SetResourceReference(TextBlock.TextProperty, "SpeakerReady");
+        }
+
         private void UpdateButtonLabels()
         {
             LeftButton.SetResourceReference(ContentControl.ContentProperty, activePan == -1f ? "StopLeft" : "PlayLeft");
@@ -176,6 +239,7 @@ namespace ComputerTestApp.Views
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             StopTone();
+            StopSampleAudio();
             if (audioDevice == null) return;
 
             audioDevice.AudioEndpointVolume.OnVolumeNotification -= AudioEndpointVolume_OnVolumeNotification;

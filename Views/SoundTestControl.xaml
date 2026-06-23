@@ -10,7 +10,7 @@
 
             <Border Background="{DynamicResource RegionBrush}" BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1" CornerRadius="6" Padding="16" Margin="0,0,0,0"
-                    MaxWidth="700" HorizontalAlignment="Left">
+                    HorizontalAlignment="Stretch">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -20,7 +20,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="320"/>
                         <ColumnDefinition Width="80"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="140"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="{DynamicResource SystemVolume}" FontSize="15" VerticalAlignment="Center" Margin="0,0,20,0"/>
                     <Slider x:Name="SystemVolumeSlider" Grid.Column="1" Minimum="0" Maximum="100"
@@ -34,7 +34,7 @@
                     <TextBlock x:Name="SpeakerMuteStatusText" Grid.Row="1" Grid.Column="1" FontSize="15"
                                Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center"
                                Margin="0,16,0,0"/>
-                    <Button x:Name="SpeakerMuteButton" Grid.Row="1" Grid.Column="3" Width="120" Height="34"
+                    <Button x:Name="SpeakerMuteButton" Grid.Row="1" Grid.Column="3" Height="34"
                             Margin="20,16,0,0" Click="SpeakerMuteButton_Click"
                             Style="{StaticResource ButtonDefault}"/>
                 </Grid>
@@ -44,6 +44,9 @@
                 <Button x:Name="LeftButton" Content="{DynamicResource PlayLeft}" Width="200" Height="50" Margin="0,0,20,0" Click="PlayLeft_Click" Style="{StaticResource ButtonPrimary}"/>
                 <Button x:Name="RightButton" Content="{DynamicResource PlayRight}" Width="200" Height="50" Click="PlayRight_Click" Style="{StaticResource ButtonDefault}"/>
             </StackPanel>
+            <Button x:Name="SampleAudioButton" Content="{DynamicResource PlaySampleAudio}" Width="200" Height="50"
+                    HorizontalAlignment="Left" Margin="0,20,0,0" Click="SampleAudioButton_Click"
+                    Style="{StaticResource ButtonDefault}"/>
             <TextBlock x:Name="StatusText" Text="{DynamicResource SpeakerReady}" Margin="0,20,0,0" FontSize="16" HorizontalAlignment="Left" Foreground="{DynamicResource SecondaryTextBrush}"/>
         </StackPanel>
     </Grid>

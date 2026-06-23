@@ -29,6 +29,7 @@ namespace ComputerTestApp.Views
             };
             powerRefreshTimer.Tick += PowerRefreshTimer_Tick;
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
+            LocalizationService.LanguageChanged += LocalizationService_LanguageChanged;
         }
 
         private async void CheckBatteryButton_Click(object sender, RoutedEventArgs e)
@@ -66,6 +67,14 @@ namespace ComputerTestApp.Views
             powerRefreshTimer.Stop();
             powerRefreshTimer.Tick -= PowerRefreshTimer_Tick;
             SystemEvents.PowerModeChanged -= SystemEvents_PowerModeChanged;
+            LocalizationService.LanguageChanged -= LocalizationService_LanguageChanged;
+        }
+
+        private void LocalizationService_LanguageChanged(object sender, EventArgs e)
+        {
+            if (currentBatteries.Count == 0) return;
+
+            RefreshCurrentBatteryStatus();
         }
 
         private void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
@@ -464,7 +473,7 @@ namespace ComputerTestApp.Views
 
         private static string FormatMWh(double value)
         {
-            return value <= 0 ? LocalizationService.Get("Unknown") : $"{value:0} mWh";
+            return value <= 0 ? LocalizationService.Get("Unknown") : $"{value / 1000:0.##} Wh";
         }
 
         private class BatteryInfo

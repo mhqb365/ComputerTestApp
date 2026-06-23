@@ -22,14 +22,14 @@
     <system:String x:Key="NavKeyboard">Bàn phím</system:String>
     <system:String x:Key="NavScreen">Màn hình</system:String>
     <system:String x:Key="NavSpeaker">Loa</system:String>
-    <system:String x:Key="NavMicrophone">Micrô</system:String>
-    <system:String x:Key="NavWebcam">Máy ảnh</system:String>
+    <system:String x:Key="NavMicrophone">Micro</system:String>
+    <system:String x:Key="NavWebcam">Camera</system:String>
     <system:String x:Key="NavBattery">Pin</system:String>
     <system:String x:Key="NavDisk">Ổ cứng</system:String>
     <system:String x:Key="NavUsb">Cổng USB</system:String>
 
     <system:String x:Key="KeyboardTitle">Kiểm tra bàn phím</system:String>
-    <system:String x:Key="KeyboardInstruction">Nhấn phím bất kỳ để kiểm tra. Phím đã gõ sẽ được đánh dấu viền xanh và đếm số lần gõ. Chuyển về bộ gõ EN để ổn định.</system:String>
+    <system:String x:Key="KeyboardInstruction">Nhấn phím để kiểm tra. Phím đã gõ sẽ được đánh dấu viền xanh. Chuyển về bộ gõ EN để ổn định.</system:String>
     <system:String x:Key="KeysLabel"> phím</system:String>
     <system:String x:Key="Reset">Đặt lại</system:String>
     <system:String x:Key="MouseLeft">Chuột trái</system:String>
@@ -37,7 +37,7 @@
     <system:String x:Key="MouseRight">Chuột phải</system:String>
 
     <system:String x:Key="ScreenTitle">Kiểm tra màn hình</system:String>
-    <system:String x:Key="ScreenDescription">Kiểm tra điểm ảnh chết bằng cách hiển thị toàn màn hình với các màu đơn sắc. Nhấp chuột để đổi màu, nhấn phím ESC để thoát.</system:String>
+    <system:String x:Key="ScreenDescription">Click chuột để đổi màu, nhấn phím ESC để thoát.</system:String>
     <system:String x:Key="ScreenInstruction">Hướng dẫn: Nhấp chuột để đổi màu. Bấm ESC để thoát.</system:String>
     <system:String x:Key="StartTest">Bắt đầu kiểm tra</system:String>
 
@@ -54,15 +54,24 @@
     <system:String x:Key="PlayRight">Phát loa phải</system:String>
     <system:String x:Key="StopLeft">Dừng loa trái</system:String>
     <system:String x:Key="StopRight">Dừng loa phải</system:String>
+    <system:String x:Key="PlaySampleAudio">Phát âm thanh mẫu</system:String>
+    <system:String x:Key="StopSampleAudio">Dừng âm thanh mẫu</system:String>
     <system:String x:Key="SpeakerReady">Sẵn sàng kiểm tra.</system:String>
     <system:String x:Key="PlayingLeft">Đang phát loa trái...</system:String>
     <system:String x:Key="PlayingRight">Đang phát loa phải...</system:String>
+    <system:String x:Key="PlayingSampleAudio">Đang phát âm thanh mẫu...</system:String>
+    <system:String x:Key="SampleAudioNotFound">Không tìm thấy file âm thanh mẫu.</system:String>
     <system:String x:Key="ErrorFormat">Lỗi: {0}</system:String>
 
-    <system:String x:Key="MicTitle">Kiểm tra micrô</system:String>
-    <system:String x:Key="MicDescription">Kiểm tra tín hiệu đầu vào, thu âm và phát lại từ micrô.</system:String>
-    <system:String x:Key="SelectMicrophone">Chọn micrô</system:String>
-    <system:String x:Key="MicrophoneSensitivity">Độ nhạy micrô</system:String>
+    <system:String x:Key="MicTitle">Kiểm tra micro</system:String>
+    <system:String x:Key="MicDescription">Kiểm tra tín hiệu đầu vào, thu âm và phát lại từ micro.</system:String>
+    <system:String x:Key="SelectMicrophone">Chọn micro</system:String>
+    <system:String x:Key="MicrophoneSensitivity">Độ nhạy micro</system:String>
+    <system:String x:Key="MicrophoneStatus">Trạng thái micro</system:String>
+    <system:String x:Key="MicrophoneOn">Đang bật</system:String>
+    <system:String x:Key="MicrophoneMuted">Đang tắt tiếng</system:String>
+    <system:String x:Key="MuteMicrophone">Tắt micro</system:String>
+    <system:String x:Key="UnmuteMicrophone">Bật micro</system:String>
     <system:String x:Key="StartRecording">Bắt đầu thu âm</system:String>
     <system:String x:Key="StopRecording">Dừng thu âm</system:String>
     <system:String x:Key="Playback">Phát lại</system:String>
@@ -72,21 +81,27 @@
     <system:String x:Key="RecordingNow">Đang thu âm...</system:String>
     <system:String x:Key="PlaybackNow">Đang phát lại bản thu...</system:String>
     <system:String x:Key="VolumeLevel">Mức tín hiệu đầu vào:</system:String>
-    <system:String x:Key="NoMicrophone">Không tìm thấy micrô.</system:String>
-    <system:String x:Key="MicrophoneListError">Không thể tải danh sách micrô.</system:String>
-    <system:String x:Key="MicrophoneErrorFormat">Lỗi micrô: {0}</system:String>
+    <system:String x:Key="NoMicrophone">Không tìm thấy micro.</system:String>
+    <system:String x:Key="MicrophoneListError">Không thể tải danh sách micro.</system:String>
+    <system:String x:Key="MicrophoneErrorFormat">Lỗi micro: {0}</system:String>
     <system:String x:Key="PlaybackErrorFormat">Lỗi phát âm thanh: {0}</system:String>
 
-    <system:String x:Key="WebcamTitle">Kiểm tra máy ảnh</system:String>
-    <system:String x:Key="WebcamDescription">Kiểm tra tín hiệu hình ảnh trực tiếp. Vui lòng chọn máy ảnh và nhấn Bắt đầu.</system:String>
-    <system:String x:Key="SelectCamera">Chọn máy ảnh</system:String>
+    <system:String x:Key="WebcamTitle">Kiểm tra camera</system:String>
+    <system:String x:Key="WebcamDescription">Kiểm tra tín hiệu hình ảnh từ camera.</system:String>
+    <system:String x:Key="SelectCamera">Chọn camera</system:String>
+    <system:String x:Key="CameraStatus">Trạng thái camera</system:String>
+    <system:String x:Key="CameraOn">Đang bật</system:String>
+    <system:String x:Key="CameraOff">Đang tắt</system:String>
+    <system:String x:Key="TurnOnCamera">Bật camera</system:String>
+    <system:String x:Key="TurnOffCamera">Tắt camera</system:String>
+    <system:String x:Key="NoCamera">Không tìm thấy camera.</system:String>
     <system:String x:Key="Start">Bắt đầu</system:String>
     <system:String x:Key="Stop">Dừng</system:String>
-    <system:String x:Key="CameraListErrorFormat">Không thể tải danh sách máy ảnh: {0}</system:String>
+    <system:String x:Key="CameraListErrorFormat">Không thể tải danh sách camera: {0}</system:String>
     <system:String x:Key="ErrorTitle">Lỗi</system:String>
 
     <system:String x:Key="BatteryTitle">Kiểm tra độ chai pin</system:String>
-    <system:String x:Key="BatteryDescription">Kiểm tra độ chai pin từ báo cáo pin của Windows và trạng thái pin hiện tại.</system:String>
+    <system:String x:Key="BatteryDescription">Kiểm tra độ chai pin từ báo cáo pin của Windows.</system:String>
     <system:String x:Key="CheckBattery">Kiểm tra pin</system:String>
     <system:String x:Key="CheckingBattery">Đang kiểm tra...</system:String>
     <system:String x:Key="Battery">Pin</system:String>
@@ -110,7 +125,7 @@
     <system:String x:Key="BatteryCheckErrorFormat">Kiểm tra pin thất bại: {0}</system:String>
 
     <system:String x:Key="DiskTitle">Kiểm tra ổ cứng</system:String>
-    <system:String x:Key="DiskDescription">Kiểm tra các ổ cứng trong máy bằng smartmontools. Cài smartmontools hoặc đặt smartctl.exe cạnh ứng dụng.</system:String>
+    <system:String x:Key="DiskDescription">Kiểm tra các ổ cứng trong máy bằng smartmontools.</system:String>
     <system:String x:Key="CheckDisk">Kiểm tra ổ cứng</system:String>
     <system:String x:Key="CheckingDisk">Đang kiểm tra...</system:String>
     <system:String x:Key="DiskDevice">Thiết bị</system:String>
@@ -134,7 +149,7 @@
     <system:String x:Key="DiskCheckErrorFormat">Kiểm tra ổ cứng thất bại: {0}</system:String>
 
     <system:String x:Key="UsbTitle">Kiểm tra cổng USB</system:String>
-    <system:String x:Key="UsbDescription">Cắm thiết bị vào cổng cần kiểm tra. Thông tin sẽ xuất hiện khi Windows nhận diện và biến mất khi rút thiết bị.</system:String>
+    <system:String x:Key="UsbDescription">Cắm thiết bị vào cổng cần kiểm tra. Thông tin sẽ xuất hiện khi Windows nhận diện.</system:String>
     <system:String x:Key="UsbDetected">Đã phát hiện thiết bị USB</system:String>
     <system:String x:Key="Device">Thiết bị</system:String>
     <system:String x:Key="Manufacturer">Nhà sản xuất</system:String>

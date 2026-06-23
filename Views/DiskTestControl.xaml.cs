@@ -15,9 +15,13 @@ namespace ComputerTestApp.Views
 {
     public partial class DiskTestControl : UserControl
     {
+        private DiskCheckResult currentResult;
+
         public DiskTestControl()
         {
             InitializeComponent();
+            LocalizationService.LanguageChanged += LocalizationService_LanguageChanged;
+            Unloaded += DiskTestControl_Unloaded;
         }
 
         private async void CheckDiskButton_Click(object sender, RoutedEventArgs e)
@@ -28,8 +32,8 @@ namespace ComputerTestApp.Views
 
             try
             {
-                var result = await Task.Run(() => LoadDiskInfo());
-                ShowResults(result);
+                currentResult = await Task.Run(() => LoadDiskInfo());
+                ShowResults(currentResult);
             }
             catch (Exception ex)
             {
@@ -49,6 +53,7 @@ namespace ComputerTestApp.Views
         private void ShowResults(DiskCheckResult result)
         {
             ResultPanel.Children.Clear();
+            if (result == null) return;
 
             if (!string.IsNullOrWhiteSpace(result.MessageResourceKey))
             {
@@ -106,7 +111,10 @@ namespace ComputerTestApp.Views
             AddInfoRow(panel, LocalizationService.Get("DiskSerial"), disk.Serial);
             AddInfoRow(panel, LocalizationService.Get("DiskCapacity"), disk.Capacity);
             AddInfoRow(panel, LocalizationService.Get("DiskHealth"), disk.Health);
-            AddInfoRow(panel, LocalizationService.Get("DiskSmartStatus"), disk.SmartStatus);
+            AddInfoRow(
+                panel,
+                LocalizationService.Get("DiskSmartStatus"),
+                LocalizationService.Get(string.IsNullOrWhiteSpace(disk.SmartStatusResourceKey) ? "Unknown" : disk.SmartStatusResourceKey));
             AddInfoRow(panel, LocalizationService.Get("DiskTemperature"), disk.Temperature);
             AddInfoRow(panel, LocalizationService.Get("DiskPowerOnHours"), disk.PowerOnHours);
             AddInfoRow(panel, LocalizationService.Get("DiskPowerCycles"), disk.PowerCycles);
@@ -219,7 +227,7 @@ namespace ComputerTestApp.Views
                 Model = physicalDisk.Model,
                 Serial = physicalDisk.Serial,
                 Capacity = physicalDisk.SizeText,
-                SmartStatus = LocalizationService.Get("DiskSmartUnavailable")
+                SmartStatusResourceKey = "DiskSmartUnavailable"
             };
         }
 
@@ -264,9 +272,9 @@ namespace ComputerTestApp.Views
                 Model = FirstNonEmpty(detail?.ModelName, detail?.Device?.ModelName, device.InfoName),
                 Serial = detail?.SerialNumber,
                 Capacity = detail?.UserCapacity?.StringValue,
-                SmartStatus = smartPassed.HasValue
-                    ? LocalizationService.Get(smartPassed.Value ? "DiskSmartPassed" : "DiskSmartFailed")
-                    : LocalizationService.Get("Unknown"),
+                SmartStatusResourceKey = smartPassed.HasValue
+                    ? (smartPassed.Value ? "DiskSmartPassed" : "DiskSmartFailed")
+                    : "Unknown",
                 Temperature = temperature.HasValue
                     ? LocalizationService.Format("DiskTemperatureFormat", temperature.Value)
                     : null,
@@ -435,7 +443,7 @@ namespace ComputerTestApp.Views
             public string Model { get; set; }
             public string Serial { get; set; }
             public string Capacity { get; set; }
-            public string SmartStatus { get; set; }
+            public string SmartStatusResourceKey { get; set; }
             public string Temperature { get; set; }
             public string PowerOnHours { get; set; }
             public string PowerCycles { get; set; }
@@ -559,6 +567,17 @@ namespace ComputerTestApp.Views
 
             [DataMember(Name = "percentage_used")]
             public int? PercentageUsed { get; set; }
+        }
+
+        private void LocalizationService_LanguageChanged(object sender, EventArgs e)
+        {
+            ShowResults(currentResult);
+        }
+
+        private void DiskTestControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            LocalizationService.LanguageChanged -= LocalizationService_LanguageChanged;
+            Unloaded -= DiskTestControl_Unloaded;
         }
     }
 }

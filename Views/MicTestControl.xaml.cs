@@ -182,7 +182,10 @@ namespace ComputerTestApp.Views
         {
             DisposeMicrophoneEndpoint();
             MicrophoneSensitivitySlider.IsEnabled = false;
+            MicrophoneMuteButton.IsEnabled = false;
             SensitivityPercentText.SetResourceReference(TextBlock.TextProperty, "Unavailable");
+            MicrophoneMuteStatusText.SetResourceReference(TextBlock.TextProperty, "Unavailable");
+            MicrophoneMuteButton.SetResourceReference(ContentControl.ContentProperty, "Unavailable");
 
             var selectedDevice = MicrophoneList.SelectedItem as MicrophoneDeviceInfo;
             if (string.IsNullOrWhiteSpace(selectedDevice?.CoreAudioDeviceId)) return;
@@ -196,7 +199,10 @@ namespace ComputerTestApp.Views
 
                 microphoneEndpoint.AudioEndpointVolume.OnVolumeNotification += MicrophoneEndpoint_OnVolumeNotification;
                 MicrophoneSensitivitySlider.IsEnabled = true;
-                UpdateSensitivityDisplay(microphoneEndpoint.AudioEndpointVolume.MasterVolumeLevelScalar * 100);
+                MicrophoneMuteButton.IsEnabled = true;
+                UpdateMicrophoneEndpointDisplay(
+                    microphoneEndpoint.AudioEndpointVolume.MasterVolumeLevelScalar * 100,
+                    microphoneEndpoint.AudioEndpointVolume.Mute);
             }
             catch (Exception ex)
             {
@@ -223,15 +229,37 @@ namespace ComputerTestApp.Views
         private void MicrophoneEndpoint_OnVolumeNotification(AudioVolumeNotificationData data)
         {
             if (Dispatcher.HasShutdownStarted) return;
-            _ = Dispatcher.BeginInvoke(new Action(() => UpdateSensitivityDisplay(data.MasterVolume * 100)));
+            _ = Dispatcher.BeginInvoke(new Action(() => UpdateMicrophoneEndpointDisplay(data.MasterVolume * 100, data.Muted)));
         }
 
-        private void UpdateSensitivityDisplay(double sensitivity)
+        private void UpdateMicrophoneEndpointDisplay(double sensitivity, bool isMuted)
         {
             isUpdatingSensitivity = true;
             MicrophoneSensitivitySlider.Value = sensitivity;
             SensitivityPercentText.Text = $"{Math.Round(sensitivity)}%";
             isUpdatingSensitivity = false;
+            UpdateMicrophoneMuteDisplay(isMuted);
+        }
+
+        private void UpdateMicrophoneMuteDisplay(bool isMuted)
+        {
+            MicrophoneMuteStatusText.SetResourceReference(TextBlock.TextProperty, isMuted ? "MicrophoneMuted" : "MicrophoneOn");
+            MicrophoneMuteButton.SetResourceReference(ContentControl.ContentProperty, isMuted ? "UnmuteMicrophone" : "MuteMicrophone");
+        }
+
+        private void MicrophoneMuteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (microphoneEndpoint == null) return;
+
+            try
+            {
+                microphoneEndpoint.AudioEndpointVolume.Mute = !microphoneEndpoint.AudioEndpointVolume.Mute;
+                UpdateMicrophoneMuteDisplay(microphoneEndpoint.AudioEndpointVolume.Mute);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(LocalizationService.Format("MicrophoneErrorFormat", ex.Message), LocalizationService.Get("ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void DisposeMicrophoneEndpoint()

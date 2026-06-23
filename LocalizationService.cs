@@ -6,6 +6,8 @@ namespace ComputerTestApp
 {
     internal static class LocalizationService
     {
+        public static event EventHandler LanguageChanged;
+
         public static string CurrentLanguage { get; private set; } = "vi";
 
         public static void Initialize()
@@ -30,6 +32,7 @@ namespace ComputerTestApp
                 Source = new Uri($"Resources/Strings.{normalizedLanguage}.xaml", UriKind.Relative)
             });
             CurrentLanguage = normalizedLanguage;
+            LanguageChanged?.Invoke(null, EventArgs.Empty);
 
             if (!save) return;
 

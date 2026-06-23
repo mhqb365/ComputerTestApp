@@ -19,6 +19,7 @@ namespace ComputerTestApp.Views
         {
             InitializeComponent();
             LoadCameras();
+            UpdateCameraStatus(false);
         }
 
         private void LoadCameras()
@@ -33,15 +34,33 @@ namespace ComputerTestApp.Views
                 if (CameraList.Items.Count > 0)
                 {
                     CameraList.SelectedIndex = 0;
+                    CameraToggleButton.IsEnabled = true;
+                    return;
                 }
+
+                CameraToggleButton.IsEnabled = false;
+                CameraStatusText.SetResourceReference(TextBlock.TextProperty, "NoCamera");
             }
             catch (Exception ex)
             {
+                CameraToggleButton.IsEnabled = false;
+                CameraStatusText.SetResourceReference(TextBlock.TextProperty, "Unavailable");
                 MessageBox.Show(LocalizationService.Format("CameraListErrorFormat", ex.Message), LocalizationService.Get("ErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        private void StartCamera_Click(object sender, RoutedEventArgs e)
+        private void CameraToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (videoSource?.IsRunning == true)
+            {
+                StopCamera();
+                return;
+            }
+
+            StartCamera();
+        }
+
+        private void StartCamera()
         {
             if (CameraList.SelectedIndex >= 0)
             {
@@ -50,6 +69,8 @@ namespace ComputerTestApp.Views
                 videoSource = new VideoCaptureDevice(videoDevices[CameraList.SelectedIndex].MonikerString);
                 videoSource.NewFrame += VideoSource_NewFrame;
                 videoSource.Start();
+                CameraList.IsEnabled = false;
+                UpdateCameraStatus(true);
             }
         }
 
@@ -81,11 +102,6 @@ namespace ComputerTestApp.Views
             catch { }
         }
 
-        private void StopCamera_Click(object sender, RoutedEventArgs e)
-        {
-            StopCamera();
-        }
-
         private void StopCamera()
         {
             var source = videoSource;
@@ -104,6 +120,14 @@ namespace ComputerTestApp.Views
 
             CameraImage.Source = null;
             CameraPreview.Visibility = Visibility.Collapsed;
+            CameraList.IsEnabled = true;
+            UpdateCameraStatus(false);
+        }
+
+        private void UpdateCameraStatus(bool isRunning)
+        {
+            CameraStatusText.SetResourceReference(TextBlock.TextProperty, isRunning ? "CameraOn" : "CameraOff");
+            CameraToggleButton.SetResourceReference(ContentControl.ContentProperty, isRunning ? "TurnOffCamera" : "TurnOnCamera");
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
