@@ -24,6 +24,7 @@
     <system:String x:Key="NavSpeaker">Loa</system:String>
     <system:String x:Key="NavMicrophone">Micrô</system:String>
     <system:String x:Key="NavWebcam">Máy ảnh</system:String>
+    <system:String x:Key="NavBattery">Pin</system:String>
     <system:String x:Key="NavUsb">Cổng USB</system:String>
 
     <system:String x:Key="KeyboardTitle">Kiểm tra bàn phím</system:String>
@@ -77,6 +78,30 @@
     <system:String x:Key="Stop">Dừng</system:String>
     <system:String x:Key="CameraListErrorFormat">Không thể tải danh sách máy ảnh: {0}</system:String>
     <system:String x:Key="ErrorTitle">Lỗi</system:String>
+
+    <system:String x:Key="BatteryTitle">Kiểm tra độ chai pin</system:String>
+    <system:String x:Key="BatteryDescription">Kiểm tra độ chai pin từ báo cáo pin của Windows và trạng thái pin hiện tại.</system:String>
+    <system:String x:Key="CheckBattery">Kiểm tra pin</system:String>
+    <system:String x:Key="CheckingBattery">Đang kiểm tra...</system:String>
+    <system:String x:Key="Battery">Pin</system:String>
+    <system:String x:Key="BatteryNameFormat">Pin {0}</system:String>
+    <system:String x:Key="BatteryCharge">Dung lượng hiện tại</system:String>
+    <system:String x:Key="BatteryHealth">Sức khỏe pin</system:String>
+    <system:String x:Key="BatteryCycleCount">Chu kỳ sạc</system:String>
+    <system:String x:Key="BatteryDesignCapacity">Dung lượng gốc</system:String>
+    <system:String x:Key="BatteryFullChargeCapacity">Dung lượng thực tế</system:String>
+    <system:String x:Key="BatteryWearLevel">Độ chai pin</system:String>
+    <system:String x:Key="BatteryEstimatedRuntime">Thời gian sử dụng</system:String>
+    <system:String x:Key="BatteryCharging">Đang cắm sạc</system:String>
+    <system:String x:Key="BatteryDischarging">Đang dùng pin</system:String>
+    <system:String x:Key="BatteryFullyCharged">Đã sạc đầy</system:String>
+    <system:String x:Key="BatteryRuntimeDays">{0} ngày</system:String>
+    <system:String x:Key="BatteryRuntimeHours">{0} giờ</system:String>
+    <system:String x:Key="BatteryRuntimeMinutes">{0} phút</system:String>
+    <system:String x:Key="NoBattery">Không tìm thấy pin trên máy này.</system:String>
+    <system:String x:Key="BatteryReportCreateFailed">Không thể tạo báo cáo pin của Windows.</system:String>
+    <system:String x:Key="BatteryReportTimeout">Tạo báo cáo pin quá thời gian chờ.</system:String>
+    <system:String x:Key="BatteryCheckErrorFormat">Kiểm tra pin thất bại: {0}</system:String>
 
     <system:String x:Key="UsbTitle">Kiểm tra cổng USB</system:String>
     <system:String x:Key="UsbDescription">Cắm thiết bị vào cổng cần kiểm tra. Thông tin sẽ xuất hiện khi Windows nhận diện và biến mất khi rút thiết bị.</system:String>

@@ -24,6 +24,7 @@
     <system:String x:Key="NavSpeaker">Speaker</system:String>
     <system:String x:Key="NavMicrophone">Microphone</system:String>
     <system:String x:Key="NavWebcam">Webcam</system:String>
+    <system:String x:Key="NavBattery">Battery</system:String>
     <system:String x:Key="NavUsb">USB Ports</system:String>
 
     <system:String x:Key="KeyboardTitle">Keyboard test</system:String>
@@ -77,6 +78,30 @@
     <system:String x:Key="Stop">Stop</system:String>
     <system:String x:Key="CameraListErrorFormat">Could not load the camera list: {0}</system:String>
     <system:String x:Key="ErrorTitle">Error</system:String>
+
+    <system:String x:Key="BatteryTitle">Battery health test</system:String>
+    <system:String x:Key="BatteryDescription">Check battery wear level from Windows battery report and current battery status.</system:String>
+    <system:String x:Key="CheckBattery">Check battery</system:String>
+    <system:String x:Key="CheckingBattery">Checking...</system:String>
+    <system:String x:Key="Battery">Battery</system:String>
+    <system:String x:Key="BatteryNameFormat">Battery {0}</system:String>
+    <system:String x:Key="BatteryCharge">Charge</system:String>
+    <system:String x:Key="BatteryHealth">Health</system:String>
+    <system:String x:Key="BatteryCycleCount">Cycle count</system:String>
+    <system:String x:Key="BatteryDesignCapacity">Design capacity</system:String>
+    <system:String x:Key="BatteryFullChargeCapacity">Full charge capacity</system:String>
+    <system:String x:Key="BatteryWearLevel">Wear level</system:String>
+    <system:String x:Key="BatteryEstimatedRuntime">Estimated runtime</system:String>
+    <system:String x:Key="BatteryCharging">Charging</system:String>
+    <system:String x:Key="BatteryDischarging">Discharging</system:String>
+    <system:String x:Key="BatteryFullyCharged">Fully charged</system:String>
+    <system:String x:Key="BatteryRuntimeDays">{0} days</system:String>
+    <system:String x:Key="BatteryRuntimeHours">{0} hours</system:String>
+    <system:String x:Key="BatteryRuntimeMinutes">{0} minutes</system:String>
+    <system:String x:Key="NoBattery">No battery was found on this computer.</system:String>
+    <system:String x:Key="BatteryReportCreateFailed">Could not create the Windows battery report.</system:String>
+    <system:String x:Key="BatteryReportTimeout">Battery report creation timed out.</system:String>
+    <system:String x:Key="BatteryCheckErrorFormat">Battery check failed: {0}</system:String>
 
     <system:String x:Key="UsbTitle">USB ports</system:String>
     <system:String x:Key="UsbDescription">Connect a device to the port under test. Its information appears when Windows detects it and disappears when unplugged.</system:String>

@@ -169,6 +169,9 @@ namespace ComputerTestApp
                 case "Webcam":
                     MainContent.Content = new WebcamTestControl();
                     break;
+                case "Battery":
+                    MainContent.Content = new BatteryTestControl();
+                    break;
                 case "Usb":
                     MainContent.Content = new UsbTestControl();
                     break;

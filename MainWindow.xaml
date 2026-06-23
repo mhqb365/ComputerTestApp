@@ -33,6 +33,7 @@
                     <ListBoxItem Content="{DynamicResource NavSpeaker}" Tag="Speaker" Padding="16"/>
                     <ListBoxItem Content="{DynamicResource NavMicrophone}" Tag="Mic" Padding="16"/>
                     <ListBoxItem Content="{DynamicResource NavWebcam}" Tag="Webcam" Padding="16"/>
+                    <ListBoxItem Content="{DynamicResource NavBattery}" Tag="Battery" Padding="16"/>
                     <ListBoxItem Content="{DynamicResource NavUsb}" Tag="Usb" Padding="16"/>
                 </ListBox>
                 <StackPanel Grid.Row="2" Margin="16">
