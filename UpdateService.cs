@@ -10,6 +10,7 @@ using System.Runtime.Serialization.Json;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace ComputerTestApp
 {
@@ -61,7 +62,10 @@ namespace ComputerTestApp
             }
         }
 
-        public static async Task<PreparedUpdate> DownloadAndPrepareUpdateAsync(GitHubRelease release)
+        public static async Task<PreparedUpdate> DownloadAndPrepareUpdateAsync(
+            GitHubRelease release,
+            IProgress<UpdateProgressInfo> progress,
+            CancellationToken cancellationToken)
         {
             var asset = FindUpdateAsset(release);
             if (asset == null)
@@ -76,23 +80,71 @@ namespace ComputerTestApp
             Directory.CreateDirectory(tempRoot);
             Directory.CreateDirectory(extractPath);
 
-            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
-            using (var client = new HttpClient())
+            try
             {
-                client.DefaultRequestHeaders.UserAgent.ParseAdd("ComputerTestApp");
-                using (var response = await client.GetAsync(asset.DownloadUrl))
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+                using (var client = new HttpClient())
                 {
-                    response.EnsureSuccessStatusCode();
-                    using (var input = await response.Content.ReadAsStreamAsync())
-                    using (var output = File.Create(zipPath))
+                    client.DefaultRequestHeaders.UserAgent.ParseAdd("ComputerTestApp");
+                    
+                    // Request headers only first to get content length
+                    using (var response = await client.GetAsync(asset.DownloadUrl, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
                     {
-                        await input.CopyToAsync(output);
+                        response.EnsureSuccessStatusCode();
+                        var totalBytes = response.Content.Headers.ContentLength ?? -1L;
+                        
+                        using (var input = await response.Content.ReadAsStreamAsync())
+                        using (var output = new FileStream(zipPath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
+                        {
+                            var buffer = new byte[8192];
+                            var totalRead = 0L;
+                            int read;
+                            
+                            while ((read = await input.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) > 0)
+                            {
+                                cancellationToken.ThrowIfCancellationRequested();
+                                await output.WriteAsync(buffer, 0, read, cancellationToken);
+                                totalRead += read;
+                                
+                                if (totalBytes != -1)
+                                {
+                                    var percentage = (int)((totalRead * 100) / totalBytes);
+                                    progress?.Report(new UpdateProgressInfo(UpdateProgressState.Downloading, percentage));
+                                }
+                            }
+                        }
                     }
                 }
-            }
 
-            ZipFile.ExtractToDirectory(zipPath, extractPath);
-            return new PreparedUpdate(GetInstallSourceDirectory(extractPath), tempRoot);
+                cancellationToken.ThrowIfCancellationRequested();
+                progress?.Report(new UpdateProgressInfo(UpdateProgressState.Extracting, 100));
+
+                await Task.Run(() =>
+                {
+                    ZipFile.ExtractToDirectory(zipPath, extractPath);
+                }, cancellationToken);
+
+                cancellationToken.ThrowIfCancellationRequested();
+                progress?.Report(new UpdateProgressInfo(UpdateProgressState.Preparing, 100));
+
+                return new PreparedUpdate(GetInstallSourceDirectory(extractPath), tempRoot);
+            }
+            catch (Exception)
+            {
+                // Clean up temp directory on failure/cancellation
+                try
+                {
+                    if (Directory.Exists(tempRoot))
+                    {
+                        Directory.Delete(tempRoot, true);
+                    }
+                }
+                catch (Exception)
+                {
+                    // Ignore cleanup errors to throw original exception
+                }
+                throw;
+            }
         }
 
         public static void InstallPreparedUpdate(PreparedUpdate update)
@@ -198,6 +250,13 @@ Remove-Item -LiteralPath $temp -Recurse -Force -ErrorAction SilentlyContinue
         public GitHubRelease Release { get; }
         public Version LatestVersion { get; }
 
+        public string DisplayLatestVersion =>
+            LatestVersion != null
+                ? (LatestVersion.Revision > 0
+                    ? $"{LatestVersion.Major}.{LatestVersion.Minor}.{LatestVersion.Build}.{LatestVersion.Revision}"
+                    : $"{LatestVersion.Major}.{LatestVersion.Minor}.{LatestVersion.Build}")
+                : string.Empty;
+
         public static UpdateCheckResult NoRelease() =>
             new UpdateCheckResult(UpdateCheckStatus.NoRelease);
 
@@ -255,5 +314,28 @@ Remove-Item -LiteralPath $temp -Recurse -Force -ErrorAction SilentlyContinue
 
         public string SourceDirectory { get; }
         public string TempRoot { get; }
+    }
+
+    internal enum UpdateProgressState
+    {
+        Downloading,
+        Extracting,
+        Preparing,
+        Failed,
+        Completed
+    }
+
+    internal sealed class UpdateProgressInfo
+    {
+        public UpdateProgressInfo(UpdateProgressState state, int percentage, string message = null)
+        {
+            State = state;
+            Percentage = percentage;
+            Message = message;
+        }
+
+        public UpdateProgressState State { get; }
+        public int Percentage { get; }
+        public string Message { get; }
     }
 }

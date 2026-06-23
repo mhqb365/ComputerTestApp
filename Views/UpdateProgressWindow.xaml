@@ -1,0 +1,81 @@
+<Window x:Class="ComputerTestApp.Views.UpdateProgressWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Updating..." Height="150" Width="400"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ShowInTaskbar="False"
+        Topmost="True">
+    <Border Background="{DynamicResource RegionBrush}"
+            BorderBrush="{DynamicResource BorderBrush}"
+            BorderThickness="1"
+            CornerRadius="12"
+            Padding="20">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Title -->
+            <TextBlock x:Name="TitleLabel"
+                       Grid.Row="0"
+                       Text="Updating..."
+                       FontWeight="Bold"
+                       FontSize="16"
+                       Foreground="{DynamicResource PrimaryTextBrush}"
+                       Margin="0,0,0,10"/>
+
+            <!-- Status text & percentage -->
+            <Grid Grid.Row="1" Margin="0,0,0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="StatusLabel"
+                           Text="0"
+                           FontSize="13"
+                           Foreground="{DynamicResource SecondaryTextBrush}"
+                           TextTrimming="CharacterEllipsis"
+                           VerticalAlignment="Center"/>
+                <TextBlock x:Name="PercentLabel"
+                           Grid.Column="1"
+                           Text="0%"
+                           FontSize="13"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource PrimaryBrush}"
+                           VerticalAlignment="Center"/>
+            </Grid>
+
+            <!-- Progress Bar -->
+            <ProgressBar x:Name="UpdateProgressBar"
+                         Grid.Row="2"
+                         Height="12"
+                         Minimum="0"
+                         Maximum="100"
+                         Value="0"
+                         BorderThickness="0"
+                         Background="{DynamicResource BorderBrush}"
+                         Foreground="{DynamicResource PrimaryBrush}"
+                         Margin="0,0,0,15"/>
+
+            <!-- Cancel Button -->
+            <Button x:Name="CancelBtn"
+                    Grid.Row="3"
+                    Content="Cancel"
+                    HorizontalAlignment="Right"
+                    Width="90"
+                    Height="30"
+                    Style="{StaticResource ButtonDefault}"
+                    Click="CancelButton_Click"/>
+        </Grid>
+    </Border>
+</Window>

@@ -1,5 +1,7 @@
 using System;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using ComputerTestApp.Views;
@@ -68,14 +70,91 @@ namespace ComputerTestApp
 
                     if (updateNow)
                     {
-                        CheckUpdateButton.SetResourceReference(ContentControl.ContentProperty, "DownloadingUpdate");
-                        var update = await UpdateService.DownloadAndPrepareUpdateAsync(result.Release);
-                        MessageBox.Show(
-                            LocalizationService.Get("UpdateReadyMessage"),
-                            LocalizationService.Get("UpdateAvailableTitle"),
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information);
-                        UpdateService.InstallPreparedUpdate(update);
+                        var cts = new CancellationTokenSource();
+                        var progressWindow = new UpdateProgressWindow(cts)
+                        {
+                            Owner = this
+                        };
+
+                        var progress = new Progress<UpdateProgressInfo>(info =>
+                        {
+                            progressWindow.UpdateProgress(info);
+                        });
+
+                        PreparedUpdate update = null;
+                        bool isCanceled = false;
+
+                        // Run download/prepare task in background thread to keep UI responsive
+                        var downloadTask = Task.Run(async () =>
+                        {
+                            try
+                            {
+                                update = await UpdateService.DownloadAndPrepareUpdateAsync(result.Release, progress, cts.Token);
+                            }
+                            catch (OperationCanceledException)
+                            {
+                                isCanceled = true;
+                            }
+                            finally
+                            {
+                                // Close progress window on UI thread when done/canceled
+                                _ = Dispatcher.BeginInvoke((Action)(() =>
+                                {
+                                    if (progressWindow.IsLoaded)
+                                    {
+                                        progressWindow.Close();
+                                    }
+                                }));
+                            }
+                        });
+
+                        // Show progress dialog as modal (blocks MainWindow inputs)
+                        progressWindow.ShowDialog();
+
+                        // If dialog closed but download is still running (e.g. closed window manually), cancel it
+                        if (!downloadTask.IsCompleted)
+                        {
+                            cts.Cancel();
+                            try
+                            {
+                                await downloadTask;
+                            }
+                            catch (Exception) { }
+                        }
+
+                        if (isCanceled)
+                        {
+                            MessageBox.Show(
+                                LocalizationService.Get("UpdateCanceled"),
+                                LocalizationService.Get("NoUpdateTitle"),
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information);
+                        }
+                        else if (update != null)
+                        {
+                            MessageBox.Show(
+                                LocalizationService.Get("UpdateReadyMessage"),
+                                LocalizationService.Get("UpdateAvailableTitle"),
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information);
+                            UpdateService.InstallPreparedUpdate(update);
+                        }
+                        else
+                        {
+                            // If update failed for other reasons (e.g. network/io exceptions), rethrow to catch block
+                            try
+                            {
+                                await downloadTask;
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(
+                                    LocalizationService.Format("UpdateFailed", ex.Message),
+                                    LocalizationService.Get("UpdateCheckErrorTitle"),
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Error);
+                            }
+                        }
                     }
                     break;
                 case UpdateCheckStatus.UpToDate:
@@ -130,7 +209,7 @@ namespace ComputerTestApp
                 Text = LocalizationService.Format(
                     "UpdateAvailableMessage",
                     UpdateService.DisplayVersion,
-                    result.LatestVersion,
+                    result.DisplayLatestVersion,
                     result.Release?.TagName ?? result.Release?.Name),
                 TextWrapping = TextWrapping.Wrap,
                 Margin = new Thickness(0, 0, 0, 18)

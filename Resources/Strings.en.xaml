@@ -10,18 +10,25 @@
     <system:String x:Key="CheckUpdate">Update</system:String>
     <system:String x:Key="CheckingUpdate">Checking...</system:String>
     <system:String x:Key="UpdateAvailableTitle">Update available</system:String>
-    <system:String x:Key="UpdateAvailableMessage">Current version: {0}&#x0a;Latest version: {1} ({2})&#x0a;&#x0a;Do you want to update now?</system:String>
+    <system:String x:Key="UpdateAvailableMessage" xml:space="preserve">Current version: {0}&#x0a;Latest version: {1}&#x0a;&#x0a;Do you want to update now?</system:String>
     <system:String x:Key="UpdateNow">Update now</system:String>
     <system:String x:Key="SkipUpdate">Skip</system:String>
     <system:String x:Key="DownloadingUpdate">Updating...</system:String>
     <system:String x:Key="UpdateReadyMessage">The update has been downloaded. The app will close, install the update, and reopen automatically.</system:String>
     <system:String x:Key="NoUpdateAssetMessage">No ZIP update package was found in this GitHub release.</system:String>
     <system:String x:Key="NoUpdateTitle">Update</system:String>
-    <system:String x:Key="NoUpdateMessage">You are using the latest version ({0}).</system:String>
+    <system:String x:Key="NoUpdateMessage">You are using the latest version {0}.</system:String>
     <system:String x:Key="NoReleaseMessage">No GitHub release was found.</system:String>
     <system:String x:Key="UnknownReleaseVersionMessage">A GitHub release was found, but its version could not be read. Do you want to open the release page?</system:String>
     <system:String x:Key="UpdateCheckErrorTitle">Update error</system:String>
     <system:String x:Key="UpdateCheckErrorMessage">Could not check for updates: {0}</system:String>
+    <system:String x:Key="Cancel">Cancel</system:String>
+    <system:String x:Key="DownloadingUpdateProgress">Downloading update... {0}%</system:String>
+    <system:String x:Key="DownloadingUpdateProgressLabel">Downloading update...</system:String>
+    <system:String x:Key="ExtractingUpdate">Extracting update package...</system:String>
+    <system:String x:Key="PreparingUpdate">Preparing installation...</system:String>
+    <system:String x:Key="UpdateCanceled">Update download has been canceled.</system:String>
+    <system:String x:Key="UpdateFailed">Update failed: {0}</system:String>
     <system:String x:Key="EnableLightMode">Light mode</system:String>
     <system:String x:Key="EnableDarkMode">Dark mode</system:String>
     <system:String x:Key="NavKeyboard">Keyboard</system:String>
