@@ -118,15 +118,15 @@
     <system:String x:Key="DiskSerial">Serial</system:String>
     <system:String x:Key="DiskCapacity">Dung lượng</system:String>
     <system:String x:Key="DiskSmartStatus">Trạng thái SMART</system:String>
+    <system:String x:Key="DiskHealth">Sức khỏe</system:String>
     <system:String x:Key="DiskTemperature">Nhiệt độ</system:String>
     <system:String x:Key="DiskPowerOnHours">Số giờ hoạt động</system:String>
     <system:String x:Key="DiskPowerCycles">Số lần bật/tắt</system:String>
-    <system:String x:Key="DiskWearUsed">Mức hao mòn</system:String>
     <system:String x:Key="DiskSmartPassed">Tốt</system:String>
     <system:String x:Key="DiskSmartFailed">Lỗi / cảnh báo</system:String>
     <system:String x:Key="DiskSmartUnavailable">Không đọc được. Hãy thử chạy ứng dụng bằng quyền quản trị hoặc kiểm tra ổ/adapter có hỗ trợ SMART không.</system:String>
     <system:String x:Key="DiskTemperatureFormat">{0} °C</system:String>
-    <system:String x:Key="DiskWearUsedFormat">{0}%</system:String>
+    <system:String x:Key="DiskHealthFormat">{0}%</system:String>
     <system:String x:Key="SmartctlNotFound">Không tìm thấy smartctl.exe. Hãy cài smartmontools, thêm vào PATH, hoặc đặt smartctl.exe cạnh ứng dụng.</system:String>
     <system:String x:Key="NoDiskFound">smartctl không tìm thấy ổ cứng nào.</system:String>
     <system:String x:Key="SmartctlRunFailed">Không thể chạy smartctl.</system:String>
@@ -144,10 +144,10 @@
     <system:String x:Key="UsbConnector">Loại đầu cắm</system:String>
     <system:String x:Key="DeviceId">Mã thiết bị</system:String>
     <system:String x:Key="Unknown">Không rõ</system:String>
-    <system:String x:Key="Usb1Inferred">USB 1.x (suy luận)</system:String>
-    <system:String x:Key="Usb2Inferred">USB 2.0 / High-Speed (suy luận)</system:String>
-    <system:String x:Key="Usb3Inferred">USB 3.x / SuperSpeed (suy luận)</system:String>
-    <system:String x:Key="Usb4Inferred">USB4 (suy luận)</system:String>
-    <system:String x:Key="UsbTypeCInferred">Có thể là USB-C (suy luận)</system:String>
+    <system:String x:Key="Usb1Inferred">USB 1.x (?)</system:String>
+    <system:String x:Key="Usb2Inferred">USB 2.0 / High-Speed (?)</system:String>
+    <system:String x:Key="Usb3Inferred">USB 3.x / SuperSpeed (?)</system:String>
+    <system:String x:Key="Usb4Inferred">USB4 (?)</system:String>
+    <system:String x:Key="UsbTypeCInferred">Có thể là USB-C (?)</system:String>
     <system:String x:Key="UsbMonitorErrorFormat">Không thể khởi tạo theo dõi USB: {0}</system:String>
 </ResourceDictionary>

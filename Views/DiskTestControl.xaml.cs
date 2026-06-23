@@ -102,15 +102,14 @@ namespace ComputerTestApp.Views
             title.SetResourceReference(TextBlock.ForegroundProperty, "PrimaryBrush");
             panel.Children.Add(title);
 
-            AddInfoRow(panel, LocalizationService.Get("DiskDevice"), disk.DeviceName);
             AddInfoRow(panel, LocalizationService.Get("DiskProtocol"), disk.Protocol);
             AddInfoRow(panel, LocalizationService.Get("DiskSerial"), disk.Serial);
             AddInfoRow(panel, LocalizationService.Get("DiskCapacity"), disk.Capacity);
+            AddInfoRow(panel, LocalizationService.Get("DiskHealth"), disk.Health);
             AddInfoRow(panel, LocalizationService.Get("DiskSmartStatus"), disk.SmartStatus);
             AddInfoRow(panel, LocalizationService.Get("DiskTemperature"), disk.Temperature);
             AddInfoRow(panel, LocalizationService.Get("DiskPowerOnHours"), disk.PowerOnHours);
             AddInfoRow(panel, LocalizationService.Get("DiskPowerCycles"), disk.PowerCycles);
-            AddInfoRow(panel, LocalizationService.Get("DiskWearUsed"), disk.WearUsed);
 
             return card;
         }
@@ -256,6 +255,7 @@ namespace ComputerTestApp.Views
             var powerCycles = detail?.PowerCycleCount ??
                 detail?.NvmeSmartLog?.PowerCycles;
             var wearUsed = detail?.NvmeSmartLog?.PercentageUsed;
+            var health = wearUsed.HasValue ? Math.Max(0, 100 - wearUsed.Value) : (int?)null;
 
             return new DiskInfo
             {
@@ -272,8 +272,8 @@ namespace ComputerTestApp.Views
                     : null,
                 PowerOnHours = powerOnHours.HasValue ? powerOnHours.Value.ToString() : null,
                 PowerCycles = powerCycles.HasValue ? powerCycles.Value.ToString() : null,
-                WearUsed = wearUsed.HasValue
-                    ? LocalizationService.Format("DiskWearUsedFormat", wearUsed.Value)
+                Health = health.HasValue
+                    ? LocalizationService.Format("DiskHealthFormat", health.Value)
                     : null
             };
         }
@@ -439,7 +439,7 @@ namespace ComputerTestApp.Views
             public string Temperature { get; set; }
             public string PowerOnHours { get; set; }
             public string PowerCycles { get; set; }
-            public string WearUsed { get; set; }
+            public string Health { get; set; }
         }
 
         private class PhysicalDiskInfo

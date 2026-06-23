@@ -118,15 +118,15 @@
     <system:String x:Key="DiskSerial">Serial</system:String>
     <system:String x:Key="DiskCapacity">Capacity</system:String>
     <system:String x:Key="DiskSmartStatus">SMART status</system:String>
+    <system:String x:Key="DiskHealth">Health</system:String>
     <system:String x:Key="DiskTemperature">Temperature</system:String>
     <system:String x:Key="DiskPowerOnHours">Power-on hours</system:String>
     <system:String x:Key="DiskPowerCycles">Power cycles</system:String>
-    <system:String x:Key="DiskWearUsed">Wear used</system:String>
     <system:String x:Key="DiskSmartPassed">Passed</system:String>
     <system:String x:Key="DiskSmartFailed">Failed / warning</system:String>
     <system:String x:Key="DiskSmartUnavailable">Unavailable. Try running the app as administrator or check whether the disk/adapter supports SMART.</system:String>
     <system:String x:Key="DiskTemperatureFormat">{0} °C</system:String>
-    <system:String x:Key="DiskWearUsedFormat">{0}%</system:String>
+    <system:String x:Key="DiskHealthFormat">{0}%</system:String>
     <system:String x:Key="SmartctlNotFound">smartctl.exe was not found. Install smartmontools, add it to PATH, or place smartctl.exe next to the app.</system:String>
     <system:String x:Key="NoDiskFound">No disk was found by smartctl.</system:String>
     <system:String x:Key="SmartctlRunFailed">Could not run smartctl.</system:String>
@@ -144,10 +144,10 @@
     <system:String x:Key="UsbConnector">Connector type</system:String>
     <system:String x:Key="DeviceId">Device ID</system:String>
     <system:String x:Key="Unknown">Unknown</system:String>
-    <system:String x:Key="Usb1Inferred">USB 1.x (inferred)</system:String>
-    <system:String x:Key="Usb2Inferred">USB 2.0 / High-Speed (inferred)</system:String>
-    <system:String x:Key="Usb3Inferred">USB 3.x / SuperSpeed (inferred)</system:String>
-    <system:String x:Key="Usb4Inferred">USB4 (inferred)</system:String>
-    <system:String x:Key="UsbTypeCInferred">Likely USB-C (inferred)</system:String>
+    <system:String x:Key="Usb1Inferred">USB 1.x (?)</system:String>
+    <system:String x:Key="Usb2Inferred">USB 2.0 / High-Speed (?)</system:String>
+    <system:String x:Key="Usb3Inferred">USB 3.x / SuperSpeed (?)</system:String>
+    <system:String x:Key="Usb4Inferred">USB4 (?)</system:String>
+    <system:String x:Key="UsbTypeCInferred">Likely USB-C (?)</system:String>
     <system:String x:Key="UsbMonitorErrorFormat">Could not start USB monitoring: {0}</system:String>
 </ResourceDictionary>
