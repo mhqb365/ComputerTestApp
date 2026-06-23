@@ -5,6 +5,18 @@
     <system:String x:Key="BrandTitle">Kiểm tra máy tính</system:String>
     <system:String x:Key="LanguageLabel">Ngôn ngữ</system:String>
     <system:String x:Key="ThemeLabel">Giao diện</system:String>
+    <system:String x:Key="AboutLabel">Sản phẩm</system:String>
+    <system:String x:Key="About">Thông tin</system:String>
+    <system:String x:Key="CheckUpdate">Cập nhật</system:String>
+    <system:String x:Key="CheckingUpdate">Kiểm tra...</system:String>
+    <system:String x:Key="UpdateAvailableTitle">Có bản cập nhật</system:String>
+    <system:String x:Key="UpdateAvailableMessage">Phiên bản hiện tại: {0}&#x0a;Phiên bản mới nhất: {1} ({2})&#x0a;&#x0a;Bạn có muốn mở trang tải bản mới không?</system:String>
+    <system:String x:Key="NoUpdateTitle">Cập nhật</system:String>
+    <system:String x:Key="NoUpdateMessage">Bạn đang dùng phiên bản mới nhất ({0}).</system:String>
+    <system:String x:Key="NoReleaseMessage">Chưa tìm thấy release nào trên GitHub.</system:String>
+    <system:String x:Key="UnknownReleaseVersionMessage">Đã tìm thấy release trên GitHub nhưng không đọc được số phiên bản. Bạn có muốn mở trang release không?</system:String>
+    <system:String x:Key="UpdateCheckErrorTitle">Lỗi cập nhật</system:String>
+    <system:String x:Key="UpdateCheckErrorMessage">Không thể kiểm tra cập nhật: {0}</system:String>
     <system:String x:Key="EnableLightMode">Chế độ sáng</system:String>
     <system:String x:Key="EnableDarkMode">Chế độ tối</system:String>
     <system:String x:Key="NavKeyboard">Bàn phím</system:String>
@@ -15,7 +27,7 @@
     <system:String x:Key="NavUsb">Cổng USB</system:String>
 
     <system:String x:Key="KeyboardTitle">Kiểm tra bàn phím</system:String>
-    <system:String x:Key="KeyboardInstruction">Nhấn phím bất kỳ để kiểm tra. Phím đã gõ sẽ được đánh dấu viền xanh và đếm số lần gõ.</system:String>
+    <system:String x:Key="KeyboardInstruction">Nhấn phím bất kỳ để kiểm tra. Phím đã gõ sẽ được đánh dấu viền xanh và đếm số lần gõ. Chuyển về bộ gõ EN để ổn định.</system:String>
     <system:String x:Key="KeysLabel"> phím</system:String>
     <system:String x:Key="Reset">Đặt lại</system:String>
     <system:String x:Key="MouseLeft">Chuột trái</system:String>
@@ -23,7 +35,7 @@
     <system:String x:Key="MouseRight">Chuột phải</system:String>
 
     <system:String x:Key="ScreenTitle">Kiểm tra màn hình</system:String>
-    <system:String x:Key="ScreenDescription">Kiểm tra điểm ảnh chết bằng cách hiển thị toàn màn hình với các màu đơn sắc.</system:String>
+    <system:String x:Key="ScreenDescription">Kiểm tra điểm ảnh chết bằng cách hiển thị toàn màn hình với các màu đơn sắc. Nhấp chuột để đổi màu, nhấn phím ESC để thoát.</system:String>
     <system:String x:Key="ScreenInstruction">Hướng dẫn: Nhấp chuột để đổi màu. Bấm ESC để thoát.</system:String>
     <system:String x:Key="StartTest">Bắt đầu kiểm tra</system:String>
 

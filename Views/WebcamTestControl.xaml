@@ -11,8 +11,8 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0">
-            <TextBlock Text="{DynamicResource WebcamTitle}" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
-            <TextBlock Text="{DynamicResource WebcamDescription}" Margin="0,0,0,20"/>
+            <TextBlock Text="{DynamicResource WebcamTitle}" FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
+            <TextBlock Text="{DynamicResource WebcamDescription}" Margin="0,0,0,20" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20">

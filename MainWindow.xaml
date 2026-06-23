@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         mc:Ignorable="d"
-        Title="{DynamicResource AppTitle}" Height="720" Width="1080"
+        Height="720" Width="1080"
         TextElement.Foreground="{DynamicResource PrimaryTextBrush}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="14"
@@ -15,7 +15,7 @@
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="265"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -37,12 +37,19 @@
                 </ListBox>
                 <StackPanel Grid.Row="2" Margin="16">
                     <TextBlock Text="{DynamicResource ThemeLabel}" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8"/>
-                    <Button x:Name="ThemeToggleButton" Width="144" Height="34" HorizontalAlignment="Left"
+                    <Button x:Name="ThemeToggleButton" Width="106" Height="34" HorizontalAlignment="Left"
                             Margin="0,0,0,16" Click="ThemeToggleButton_Click"/>
                     <TextBlock Text="{DynamicResource LanguageLabel}" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8"/>
-                    <StackPanel Orientation="Horizontal">
-                        <Button x:Name="VietnameseButton" Content="VI" Width="68" Height="34" Margin="0,0,8,0" Click="VietnameseButton_Click"/>
-                        <Button x:Name="EnglishButton" Content="EN" Width="68" Height="34" Click="EnglishButton_Click"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <Button x:Name="VietnameseButton" Content="VI" Width="106" Height="34" Margin="0,0,12,0" Click="VietnameseButton_Click"/>
+                        <Button x:Name="EnglishButton" Content="EN" Width="106" Height="34" Click="EnglishButton_Click"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <Button Content="{DynamicResource About}" Width="106" Height="34"
+                                Margin="0,0,12,0"
+                                Click="AboutButton_Click"/>
+                        <Button x:Name="CheckUpdateButton" Content="{DynamicResource CheckUpdate}" Width="106" Height="34"
+                                Click="CheckUpdateButton_Click"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>

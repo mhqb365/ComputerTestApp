@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using ComputerTestApp.Views;
@@ -13,6 +15,7 @@ namespace ComputerTestApp
             UpdateNavigationSelectionStyles();
             UpdateLanguageButtons();
             UpdateThemeToggle();
+            UpdateWindowTitle();
         }
 
         private void ThemeToggleButton_Click(object sender, RoutedEventArgs e)
@@ -24,6 +27,93 @@ namespace ComputerTestApp
                 UpdateThemeToggle();
                 UpdateNavigationSelectionStyles();
             }));
+        }
+
+        private void AboutButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenUrl("https://github.com/mhqb365/ComputerTestApp");
+        }
+
+        private async void CheckUpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            CheckUpdateButton.IsEnabled = false;
+            CheckUpdateButton.SetResourceReference(ContentControl.ContentProperty, "CheckingUpdate");
+
+            try
+            {
+                var result = await UpdateService.CheckLatestReleaseAsync();
+                HandleUpdateResult(result);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    LocalizationService.Format("UpdateCheckErrorMessage", ex.Message),
+                    LocalizationService.Get("UpdateCheckErrorTitle"),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+            finally
+            {
+                CheckUpdateButton.IsEnabled = true;
+                CheckUpdateButton.SetResourceReference(ContentControl.ContentProperty, "CheckUpdate");
+            }
+        }
+
+        private void HandleUpdateResult(UpdateCheckResult result)
+        {
+            switch (result.Status)
+            {
+                case UpdateCheckStatus.UpdateAvailable:
+                    var answer = MessageBox.Show(
+                        LocalizationService.Format(
+                            "UpdateAvailableMessage",
+                            UpdateService.DisplayVersion,
+                            result.LatestVersion,
+                            result.Release?.TagName ?? result.Release?.Name),
+                        LocalizationService.Get("UpdateAvailableTitle"),
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Information);
+
+                    if (answer == MessageBoxResult.Yes)
+                    {
+                        OpenUrl(result.Release?.HtmlUrl ?? "https://github.com/mhqb365/ComputerTestApp/releases/latest");
+                    }
+                    break;
+                case UpdateCheckStatus.UpToDate:
+                    MessageBox.Show(
+                        LocalizationService.Format("NoUpdateMessage", UpdateService.DisplayVersion),
+                        LocalizationService.Get("NoUpdateTitle"),
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+                    break;
+                case UpdateCheckStatus.NoRelease:
+                    MessageBox.Show(
+                        LocalizationService.Get("NoReleaseMessage"),
+                        LocalizationService.Get("NoUpdateTitle"),
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+                    break;
+                default:
+                    var releaseUrl = result.Release?.HtmlUrl ?? "https://github.com/mhqb365/ComputerTestApp/releases/latest";
+                    var openRelease = MessageBox.Show(
+                        LocalizationService.Get("UnknownReleaseVersionMessage"),
+                        LocalizationService.Get("UpdateAvailableTitle"),
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Information);
+                    if (openRelease == MessageBoxResult.Yes)
+                    {
+                        OpenUrl(releaseUrl);
+                    }
+                    break;
+            }
+        }
+
+        private static void OpenUrl(string url)
+        {
+            Process.Start(new ProcessStartInfo(url)
+            {
+                UseShellExecute = true
+            });
         }
 
         private void UpdateThemeToggle()
@@ -47,6 +137,7 @@ namespace ComputerTestApp
         {
             LocalizationService.SetLanguage(language);
             UpdateLanguageButtons();
+            UpdateWindowTitle();
         }
 
         private void UpdateLanguageButtons()
@@ -103,6 +194,11 @@ namespace ComputerTestApp
                 item.ClearValue(Control.BackgroundProperty);
                 item.ClearValue(Control.ForegroundProperty);
             }
+        }
+
+        private void UpdateWindowTitle()
+        {
+            Title = $"{LocalizationService.Get("AppTitle")} v{UpdateService.DisplayVersion}";
         }
     }
 }

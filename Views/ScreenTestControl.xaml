@@ -3,9 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid Margin="20">
         <StackPanel>
-            <TextBlock Text="{DynamicResource ScreenTitle}" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
-            <TextBlock Text="{DynamicResource ScreenDescription}" Margin="0,0,0,20"/>
-            <TextBlock Text="{DynamicResource ScreenInstruction}" Margin="0,0,0,20" FontStyle="Italic"/>
+            <TextBlock Text="{DynamicResource ScreenTitle}" FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
+            <TextBlock Text="{DynamicResource ScreenDescription}" Margin="0,0,0,20" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap"/>
             <Button Content="{DynamicResource StartTest}" Width="200" Height="50" FontSize="16" Click="StartTest_Click" HorizontalAlignment="Left" Style="{StaticResource ButtonPrimary}"/>
         </StackPanel>
     </Grid>

@@ -12,12 +12,13 @@
         <StackPanel Grid.Row="0">
             <TextBlock Text="{DynamicResource UsbTitle}" FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
             <TextBlock Text="{DynamicResource UsbDescription}"
-                       Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,20"/>
+                       Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,20"
+                       TextWrapping="Wrap"/>
         </StackPanel>
 
         <Border x:Name="DeviceCard" Grid.Row="1" Visibility="Collapsed" VerticalAlignment="Top"
                 Background="{DynamicResource RegionBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
-                CornerRadius="8" Padding="24" MaxWidth="720" HorizontalAlignment="Left">
+                CornerRadius="8" Padding="24" MaxWidth="820" HorizontalAlignment="Stretch">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -39,16 +40,16 @@
                            Margin="0,0,0,20"/>
 
                 <TextBlock Grid.Row="1" Text="{DynamicResource Device}" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,12,12"/>
-                <TextBlock x:Name="DeviceNameText" Grid.Row="1" Grid.Column="1" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                <TextBlock x:Name="DeviceNameText" Grid.Row="1" Grid.Column="1" FontWeight="SemiBold" Margin="0,0,0,12" TextWrapping="Wrap"/>
 
                 <TextBlock Grid.Row="2" Text="{DynamicResource Manufacturer}" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,12,12"/>
-                <TextBlock x:Name="ManufacturerText" Grid.Row="2" Grid.Column="1" Margin="0,0,0,12"/>
+                <TextBlock x:Name="ManufacturerText" Grid.Row="2" Grid.Column="1" Margin="0,0,0,12" TextWrapping="Wrap"/>
 
                 <TextBlock Grid.Row="3" Text="{DynamicResource Status}" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,12,12"/>
                 <TextBlock x:Name="StatusText" Grid.Row="3" Grid.Column="1" Margin="0,0,0,12"/>
 
                 <TextBlock Grid.Row="4" Text="{DynamicResource UsbStandard}" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,12,12"/>
-                <TextBlock x:Name="UsbStandardText" Grid.Row="4" Grid.Column="1" Margin="0,0,0,12"/>
+                <TextBlock x:Name="UsbStandardText" Grid.Row="4" Grid.Column="1" Margin="0,0,0,12" TextWrapping="Wrap"/>
 
                 <TextBlock Grid.Row="5" Text="{DynamicResource UsbController}" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,12,12"/>
                 <TextBlock x:Name="UsbControllerText" Grid.Row="5" Grid.Column="1" TextWrapping="Wrap" Margin="0,0,0,12"/>

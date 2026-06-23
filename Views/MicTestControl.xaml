@@ -5,8 +5,8 @@
              Unloaded="UserControl_Unloaded">
     <Grid Margin="20">
         <StackPanel>
-            <TextBlock Text="{DynamicResource MicTitle}" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
-            <TextBlock Text="{DynamicResource MicDescription}" Margin="0,0,0,20"/>
+            <TextBlock Text="{DynamicResource MicTitle}" FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
+            <TextBlock Text="{DynamicResource MicDescription}" Margin="0,0,0,20" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap"/>
             <ComboBox x:Name="MicrophoneList" Width="420" Height="40" HorizontalAlignment="Left" Margin="0,0,0,20"
                       hc:InfoElement.Placeholder="{DynamicResource SelectMicrophone}"
                       SelectionChanged="MicrophoneList_SelectionChanged"/>
