@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -116,6 +116,12 @@ namespace ComputerTestApp.Views
 
         private void KeyboardTestControl_KeyDown(object sender, KeyEventArgs e)
         {
+            if (rawInputRegistered)
+            {
+                e.Handled = true;
+                return;
+            }
+
             Key key = e.Key == Key.System ? e.SystemKey : e.Key;
             // Use integer value to avoid WPF Key enum alias issues (e.g. Oem3 == OemTilde)
             string keyId = $"Key_{(int)key}";
@@ -125,6 +131,12 @@ namespace ComputerTestApp.Views
 
         private void KeyboardTestControl_KeyUp(object sender, KeyEventArgs e)
         {
+            if (rawInputRegistered)
+            {
+                e.Handled = true;
+                return;
+            }
+
             Key key = e.Key == Key.System ? e.SystemKey : e.Key;
             string keyId = $"Key_{(int)key}";
             HandleKeyRelease(keyId);
@@ -252,13 +264,12 @@ namespace ComputerTestApp.Views
                 var rawInput = (RAWINPUT)Marshal.PtrToStructure(buffer, typeof(RAWINPUT));
                 if (rawInput.header.dwType != RimTypeKeyboard) return;
 
-                var key = GetPhysicalKey(rawInput.keyboard);
-                if (key == Key.None) return;
+                var keyId = GetPhysicalKeyId(rawInput.keyboard, out var label);
+                if (string.IsNullOrWhiteSpace(keyId)) return;
 
-                var keyId = $"Key_{(int)key}";
                 if (rawInput.keyboard.Message == WmKeyDown || rawInput.keyboard.Message == WmSysKeyDown)
                 {
-                    HandleKeyPress(keyId, key.ToString());
+                    HandleKeyPress(keyId, label);
                     return;
                 }
 
@@ -292,6 +303,27 @@ namespace ComputerTestApp.Views
             }
 
             return KeyInterop.KeyFromVirtualKey(virtualKey);
+        }
+        private static string GetPhysicalKeyId(RAWKEYBOARD keyboard, out string label)
+        {
+            var virtualKey = keyboard.VKey;
+            var isExtended = (keyboard.Flags & RiKeyE0) == RiKeyE0;
+
+            if (virtualKey == VkReturn && isExtended)
+            {
+                label = "Ent";
+                return NumpadEnterKeyId;
+            }
+
+            var key = GetPhysicalKey(keyboard);
+            if (key == Key.None)
+            {
+                label = null;
+                return null;
+            }
+
+            label = key.ToString();
+            return $"Key_{(int)key}";
         }
 
         private void HandleKeyRelease(string keyId)
@@ -462,9 +494,10 @@ namespace ComputerTestApp.Views
             AddToGrid(NavBlock, KI(Key.Delete), "Del", 2, 0); AddToGrid(NavBlock, KI(Key.End), "End", 2, 1); AddToGrid(NavBlock, KI(Key.PageDown), "PgDn", 2, 2);
             // Rows 3, 4: empty spacers (aligns with ASDF + ZXCV rows)
             // Row 5: Up arrow (aligns with Ctrl/Space row)
-            AddToGrid(NavBlock, KI(Key.Up), "↑", 4, 1);
-            // Row 6: Left/Down/Right (aligns with mouse buttons row)
-            AddToGrid(NavBlock, KI(Key.Left), "←", 5, 0); AddToGrid(NavBlock, KI(Key.Down), "↓", 5, 1); AddToGrid(NavBlock, KI(Key.Right), "→", 5, 2);
+            AddToGrid(NavBlock, KI(Key.Up), "🡡", 4, 1);
+            AddToGrid(NavBlock, KI(Key.Left), "🡠", 5, 0);
+            AddToGrid(NavBlock, KI(Key.Down), "🡣", 5, 1);
+            AddToGrid(NavBlock, KI(Key.Right), "🡢", 5, 2);
 
             // --- NUMPAD BLOCK ---
             for(int i=0; i<4; i++) NumpadBlock.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(baseSize + margin*2) });
@@ -475,7 +508,7 @@ namespace ComputerTestApp.Views
             AddToGrid(NumpadBlock, KI(Key.NumLock), "Num", 1, 0); AddToGrid(NumpadBlock, KI(Key.Divide), "/", 1, 1); AddToGrid(NumpadBlock, KI(Key.Multiply), "*", 1, 2); AddToGrid(NumpadBlock, KI(Key.Subtract), "-", 1, 3);
             AddToGrid(NumpadBlock, KI(Key.NumPad7), "7", 2, 0); AddToGrid(NumpadBlock, KI(Key.NumPad8), "8", 2, 1); AddToGrid(NumpadBlock, KI(Key.NumPad9), "9", 2, 2); AddToGrid(NumpadBlock, KI(Key.Add), "+", 2, 3, 2, 1);
             AddToGrid(NumpadBlock, KI(Key.NumPad4), "4", 3, 0); AddToGrid(NumpadBlock, KI(Key.NumPad5), "5", 3, 1); AddToGrid(NumpadBlock, KI(Key.NumPad6), "6", 3, 2); 
-            AddToGrid(NumpadBlock, KI(Key.NumPad1), "1", 4, 0); AddToGrid(NumpadBlock, KI(Key.NumPad2), "2", 4, 1); AddToGrid(NumpadBlock, KI(Key.NumPad3), "3", 4, 2); AddToGrid(NumpadBlock, KI(Key.Enter), "Ent", 4, 3, 2, 1);
+            AddToGrid(NumpadBlock, KI(Key.NumPad1), "1", 4, 0); AddToGrid(NumpadBlock, KI(Key.NumPad2), "2", 4, 1); AddToGrid(NumpadBlock, KI(Key.NumPad3), "3", 4, 2); AddToGrid(NumpadBlock, NumpadEnterKeyId, "Ent", 4, 3, 2, 1);
             AddToGrid(NumpadBlock, KI(Key.NumPad0), "0", 5, 0, 1, 2); AddToGrid(NumpadBlock, KI(Key.Decimal), ".", 5, 2);
             // Row 6: empty spacer - aligns numpad bottom with main keyboard + mouse buttons bottom
         }
@@ -539,6 +572,8 @@ namespace ComputerTestApp.Views
         private const uint RidInput = 0x10000003;
         private const int RimTypeKeyboard = 1;
         private const ushort RiKeyE0 = 0x02;
+        private const string NumpadEnterKeyId = "Key_NumPadEnter";
+        private const ushort VkReturn = 0x0D;
         private const ushort VkShift = 0x10;
         private const ushort VkControl = 0x11;
         private const ushort VkMenu = 0x12;
@@ -604,3 +639,7 @@ namespace ComputerTestApp.Views
         }
     }
 }
+
+
+
+
