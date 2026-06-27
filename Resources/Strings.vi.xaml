@@ -8,12 +8,12 @@
     <system:String x:Key="AboutLabel">Sản phẩm</system:String>
     <system:String x:Key="About">Giới thiệu</system:String>
     <system:String x:Key="CheckUpdate">Cập nhật</system:String>
-    <system:String x:Key="CheckingUpdate">Đang kiểm tra...</system:String>
+    <system:String x:Key="CheckingUpdate">Kiểm tra...</system:String>
     <system:String x:Key="UpdateAvailableTitle">Có bản cập nhật</system:String>
     <system:String x:Key="UpdateAvailableMessage" xml:space="preserve">Phiên bản hiện tại: {0}&#x0a;Phiên bản mới nhất: {1}&#x0a;&#x0a;Bạn có muốn cập nhật ngay không?</system:String>
     <system:String x:Key="UpdateNow">Cập nhật ngay</system:String>
     <system:String x:Key="SkipUpdate">Bỏ qua</system:String>
-    <system:String x:Key="DownloadingUpdate">Đang cập nhật...</system:String>
+    <system:String x:Key="DownloadingUpdate">Cập nhật...</system:String>
     <system:String x:Key="UpdateReadyMessage">Bản cập nhật đã được tải về. Ứng dụng sẽ đóng, cài bản mới và tự mở lại.</system:String>
     <system:String x:Key="NoUpdateAssetMessage">Không tìm thấy gói cập nhật ZIP trong GitHub Release này.</system:String>
     <system:String x:Key="NoUpdateTitle">Cập nhật</system:String>
@@ -180,7 +180,7 @@
     <system:String x:Key="UsbMonitorErrorFormat">Không thể bắt đầu theo dõi USB: {0}</system:String>
 
     <system:String x:Key="SystemInfoTitle">Thông tin hệ thống</system:String>
-    <system:String x:Key="SystemInfoDescription">Xem tóm tắt phần cứng và hệ điều hành tương tự dxdiag.</system:String>
+    <system:String x:Key="SystemInfoDescription">Xem tóm tắt phần cứng và hệ điều hành.</system:String>
     <system:String x:Key="RefreshSystemInfo">Lấy thông tin</system:String>
     <system:String x:Key="LoadingSystemInfo">Đang tải...</system:String>
     <system:String x:Key="NoSystemInfo">Không thể đọc thông tin hệ thống.</system:String>
@@ -198,7 +198,7 @@
     <system:String x:Key="SystemInfoLastBoot">Lần khởi động gần nhất</system:String>
     <system:String x:Key="SystemInfoManufacturer">Nhà sản xuất</system:String>
     <system:String x:Key="SystemInfoModel">Model</system:String>
-    <system:String x:Key="SystemInfoMemory">Bộ nhớ</system:String>
+    <system:String x:Key="SystemInfoMemory">RAM</system:String>
     <system:String x:Key="SystemInfoMainboard">Mainboard</system:String>
     <system:String x:Key="SystemInfoCpuName">CPU</system:String>
     <system:String x:Key="SystemInfoCpuCores">Số nhân</system:String>

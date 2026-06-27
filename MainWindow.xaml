@@ -28,8 +28,8 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="{DynamicResource BrandTitle}" FontSize="24" FontWeight="Bold" Margin="16" Foreground="{DynamicResource PrimaryBrush}"/>
                 <ListBox x:Name="NavListBox" Grid.Row="1" SelectionChanged="NavListBox_SelectionChanged" Margin="0,4,0,0">
-                    <ListBoxItem Content="{DynamicResource NavKeyboard}" Tag="Keyboard" Padding="12,10"/>
                     <ListBoxItem Content="{DynamicResource NavSystemInfo}" Tag="SystemInfo" Padding="12,10"/>
+                    <ListBoxItem Content="{DynamicResource NavKeyboard}" Tag="Keyboard" Padding="12,10"/>
                     <ListBoxItem Content="{DynamicResource NavScreen}" Tag="Screen" Padding="12,10"/>
                     <ListBoxItem Content="{DynamicResource NavSpeaker}" Tag="Speaker" Padding="12,10"/>
                     <ListBoxItem Content="{DynamicResource NavMicrophone}" Tag="Mic" Padding="12,10"/>

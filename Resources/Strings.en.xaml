@@ -153,7 +153,7 @@
     <system:String x:Key="DiskSmartPassed">Passed</system:String>
     <system:String x:Key="DiskSmartFailed">Failed / warning</system:String>
     <system:String x:Key="DiskSmartUnavailable">Unavailable. Try running the app as administrator or check whether the disk/adapter supports SMART.</system:String>
-    <system:String x:Key="DiskTemperatureFormat">{0} Â°C</system:String>
+    <system:String x:Key="DiskTemperatureFormat">{0} °C</system:String>
     <system:String x:Key="DiskHealthFormat">{0}%</system:String>
     <system:String x:Key="SmartctlNotFound">smartctl.exe was not found. Install smartmontools, add it to PATH, or place smartctl.exe next to the app.</system:String>
     <system:String x:Key="NoDiskFound">No disk was found by smartctl.</system:String>
@@ -180,7 +180,7 @@
     <system:String x:Key="UsbMonitorErrorFormat">Could not start USB monitoring: {0}</system:String>
 
     <system:String x:Key="SystemInfoTitle">System information</system:String>
-    <system:String x:Key="SystemInfoDescription">View a hardware and operating system summary similar to dxdiag.</system:String>
+    <system:String x:Key="SystemInfoDescription">View a hardware and operating system summary.</system:String>
     <system:String x:Key="RefreshSystemInfo">Get information</system:String>
     <system:String x:Key="LoadingSystemInfo">Loading...</system:String>
     <system:String x:Key="NoSystemInfo">Could not read system information.</system:String>
@@ -198,7 +198,7 @@
     <system:String x:Key="SystemInfoLastBoot">Last boot</system:String>
     <system:String x:Key="SystemInfoManufacturer">Manufacturer</system:String>
     <system:String x:Key="SystemInfoModel">Model</system:String>
-    <system:String x:Key="SystemInfoMemory">Memory</system:String>
+    <system:String x:Key="SystemInfoMemory">RAM</system:String>
     <system:String x:Key="SystemInfoMainboard">Mainboard</system:String>
     <system:String x:Key="SystemInfoCpuName">CPU</system:String>
     <system:String x:Key="SystemInfoCpuCores">Cores</system:String>

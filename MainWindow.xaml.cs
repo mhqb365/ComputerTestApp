@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,11 +14,21 @@ namespace ComputerTestApp
         public MainWindow()
         {
             InitializeComponent();
-            NavListBox.SelectedIndex = 1;
+            NavListBox.SelectedIndex = 0;
             UpdateNavigationSelectionStyles();
             UpdateLanguageButtons();
             UpdateThemeToggle();
             UpdateWindowTitle();
+            Loaded += MainWindow_Loaded;
+        }
+
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            Loaded -= MainWindow_Loaded;
+
+            if (!NetworkInterface.GetIsNetworkAvailable()) return;
+
+            await CheckForUpdatesAsync(false);
         }
 
         private void ThemeToggleButton_Click(object sender, RoutedEventArgs e)
@@ -38,16 +49,23 @@ namespace ComputerTestApp
 
         private async void CheckUpdateButton_Click(object sender, RoutedEventArgs e)
         {
+            await CheckForUpdatesAsync(true);
+        }
+
+        private async Task CheckForUpdatesAsync(bool showInformationalMessages)
+        {
             CheckUpdateButton.IsEnabled = false;
             CheckUpdateButton.SetResourceReference(ContentControl.ContentProperty, "CheckingUpdate");
 
             try
             {
                 var result = await UpdateService.CheckLatestReleaseAsync();
-                await HandleUpdateResultAsync(result);
+                await HandleUpdateResultAsync(result, showInformationalMessages);
             }
             catch (Exception ex)
             {
+                if (!showInformationalMessages) return;
+
                 MessageBox.Show(
                     LocalizationService.Format("UpdateCheckErrorMessage", ex.Message),
                     LocalizationService.Get("UpdateCheckErrorTitle"),
@@ -61,7 +79,7 @@ namespace ComputerTestApp
             }
         }
 
-        private async System.Threading.Tasks.Task HandleUpdateResultAsync(UpdateCheckResult result)
+        private async Task HandleUpdateResultAsync(UpdateCheckResult result, bool showInformationalMessages)
         {
             switch (result.Status)
             {
@@ -158,6 +176,8 @@ namespace ComputerTestApp
                     }
                     break;
                 case UpdateCheckStatus.UpToDate:
+                    if (!showInformationalMessages) break;
+
                     MessageBox.Show(
                         LocalizationService.Format("NoUpdateMessage", UpdateService.DisplayVersion),
                         LocalizationService.Get("NoUpdateTitle"),
@@ -165,6 +185,8 @@ namespace ComputerTestApp
                         MessageBoxImage.Information);
                     break;
                 case UpdateCheckStatus.NoRelease:
+                    if (!showInformationalMessages) break;
+
                     MessageBox.Show(
                         LocalizationService.Get("NoReleaseMessage"),
                         LocalizationService.Get("NoUpdateTitle"),
@@ -172,6 +194,8 @@ namespace ComputerTestApp
                         MessageBoxImage.Information);
                     break;
                 default:
+                    if (!showInformationalMessages) break;
+
                     var releaseUrl = result.Release?.HtmlUrl ?? "https://github.com/mhqb365/ComputerTestApp/releases/latest";
                     var openRelease = MessageBox.Show(
                         LocalizationService.Get("UnknownReleaseVersionMessage"),
