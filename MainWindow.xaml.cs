@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +13,7 @@ namespace ComputerTestApp
         public MainWindow()
         {
             InitializeComponent();
-            NavListBox.SelectedIndex = 0;
+            NavListBox.SelectedIndex = 1;
             UpdateNavigationSelectionStyles();
             UpdateLanguageButtons();
             UpdateThemeToggle();
@@ -305,6 +305,9 @@ namespace ComputerTestApp
                 case "Keyboard":
                     MainContent.Content = new KeyboardTestControl();
                     break;
+                case "SystemInfo":
+                    MainContent.Content = new SystemInfoControl();
+                    break;
                 case "Screen":
                     MainContent.Content = new ScreenTestControl();
                     break;
@@ -356,3 +359,4 @@ namespace ComputerTestApp
         }
     }
 }
+

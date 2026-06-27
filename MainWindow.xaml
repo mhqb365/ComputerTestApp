@@ -1,4 +1,4 @@
-<Window x:Class="ComputerTestApp.MainWindow"
+﻿<Window x:Class="ComputerTestApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -29,6 +29,7 @@
                 <TextBlock Text="{DynamicResource BrandTitle}" FontSize="24" FontWeight="Bold" Margin="16" Foreground="{DynamicResource PrimaryBrush}"/>
                 <ListBox x:Name="NavListBox" Grid.Row="1" SelectionChanged="NavListBox_SelectionChanged" Margin="0,4,0,0">
                     <ListBoxItem Content="{DynamicResource NavKeyboard}" Tag="Keyboard" Padding="12,10"/>
+                    <ListBoxItem Content="{DynamicResource NavSystemInfo}" Tag="SystemInfo" Padding="12,10"/>
                     <ListBoxItem Content="{DynamicResource NavScreen}" Tag="Screen" Padding="12,10"/>
                     <ListBoxItem Content="{DynamicResource NavSpeaker}" Tag="Speaker" Padding="12,10"/>
                     <ListBoxItem Content="{DynamicResource NavMicrophone}" Tag="Mic" Padding="12,10"/>
@@ -60,3 +61,5 @@
         </hc:TransitioningContentControl>
     </Grid>
 </Window>
+
+
